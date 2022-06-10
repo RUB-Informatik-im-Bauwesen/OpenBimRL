@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+OpenBimRL (c) by Lehrstuhl für Informatik im Bauwesen, Ruhr-Universität Bochum, 2022
+
+OpenBimRL is licensed under a
+Creative Commons Attribution 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
+-->
+<schema targetNamespace="http://inf.bi.rub.de/OpenBimRL" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://inf.bi.rub.de/OpenBimRL">
+
+    <element name="BIMRule" type="tns:BIMRuleType">
+    </element>
+
+    <complexType name="InputType">
+    	<attribute name="name" type="string"></attribute>
+    	<attribute name="value" type="string"></attribute>
+    	<attribute name="typeHint" type="string"></attribute>
+    	<attribute name="collectionType" type="string"></attribute>
+    	<attribute name="required" type="string"></attribute>
+    </complexType>
+
+    <complexType name="OutputType">
+    	<attribute name="name" type="string"></attribute>
+    	<attribute name="value" type="string"></attribute>
+    </complexType>
+    <complexType name="NodeType">
+    	<sequence>
+    		<element name="Description" type="string" maxOccurs="1"
+    			minOccurs="0" nillable="true">
+    		</element>
+    		<element minOccurs="0" maxOccurs="1" name="Inputs">
+    			<complexType>
+    				<sequence minOccurs="1" maxOccurs="unbounded">
+    					<element name="Input" type="tns:InputType"
+    						maxOccurs="unbounded" minOccurs="1">
+    					</element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    		<element minOccurs="0" maxOccurs="1" name="Outputs">
+    			<complexType>
+    				<sequence>
+    					<element name="Output" type="tns:OutputType"
+    						maxOccurs="unbounded" minOccurs="1">
+    					</element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    	</sequence>
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="function" type="string"></attribute>
+    	<attribute name="alias" type="string"></attribute>
+    </complexType>
+    <complexType name="BIMRuleType">
+    	<sequence>
+    		<element name="Precalculations"
+    			type="tns:PrecalculationsType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="ModelCheck" type="tns:ModelCheckType"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    	</sequence>
+    	<attribute name="schemaVersion" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="ModelCheckType">
+    	<sequence>
+    		<element name="RuleIdentifiers"
+    			type="tns:RuleIdentifiersType">
+    		</element>
+    		<element name="ModelSubChecks"
+    			type="tns:ModelSubChecksType">
+    		</element>
+    		<element name="ResultSets" 
+    			type="tns:ResultSetsType">
+    		</element>
+        </sequence>
+    	<attribute name="name" type="string"></attribute>
+    </complexType>
+
+    <complexType name="RulesType">
+    	<choice maxOccurs="unbounded" minOccurs="1">
+    		<element name="Rule" type="tns:RuleType">
+    			<unique name="ruleUniqueLabel">
+				    <selector xpath="tns:RuleType" /> 
+				    <field xpath="@label" /> 
+			    </unique>
+    		</element>
+    		<element ref="tns:Rules">
+    		</element>
+    	</choice>
+    	<attribute name="operator" type="string"></attribute>
+    	<attribute name="name" type="string"></attribute>
+    </complexType>
+
+    <complexType name="RuleType">
+    	<attribute name="label" type="string"></attribute>
+        <attribute name="quantifier" type="string"></attribute>
+        <attribute name="operator" type="string"></attribute>
+    	<attribute name="operand1" type="string"></attribute>
+    	<attribute name="operand2" type="string"></attribute>
+    	<attribute name="filter" type="string"></attribute>
+    </complexType>
+
+    <complexType name="RuleIdentifiersType">
+    	<sequence>
+    		<element name="RuleIdentifier" type="tns:RuleIdentifierType" maxOccurs="unbounded" minOccurs="1">
+			    <unique name="ruleIdentifierUniqueLabel">
+				    <selector xpath="tns:RuleIdentifierType" /> 
+				    <field xpath="@label" /> 
+			    </unique>
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="RuleIdentifierType">
+    	<sequence>
+    		<element name="Message" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="source" type="string" use="required"></attribute>
+    	<attribute name="sourceHandle" type="int" use="required"></attribute>
+    	<attribute name="label" type="string" use="required"></attribute>
+    </complexType>
+    
+    <complexType name="ModelSubChecksType">
+    	<sequence>
+    		<element name="ModelSubCheck"
+    			type="tns:ModelSubCheckType" maxOccurs="unbounded" minOccurs="1">
+    		</element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="ModelSubCheckType">
+    	<sequence>
+    		<element name="Applicability" type="tns:ApplicablityType"></element>
+    		<element name="Rules" type="tns:RulesType"></element>
+    	</sequence>
+    	<attribute name="name" type="string"></attribute>
+    </complexType>
+
+    <complexType name="ApplicablityType">
+    	<choice>
+    		<element ref="tns:Rule"></element>
+    	</choice>
+    </complexType>
+    
+    <complexType name="ResultSetType">
+    	<attribute name="name" type="string"></attribute>
+        <attribute name="elements" type="string"></attribute>
+    	<attribute name="filter" type="string"></attribute>
+    </complexType>
+    
+    <complexType name="ResultSetsType">
+    	<sequence>
+    		<element name="ResultSet" type="tns:ResultSetType" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+    
+
+    <element name="Rule" type="tns:RuleType"></element>
+
+    <element name="Rules" type="tns:RulesType"></element>
+
+    <complexType name="PrecalculationsType">
+    	<choice maxOccurs="unbounded" minOccurs="1">
+    		<element name="Node" type="tns:NodeType">
+    		</element>
+    		<element name="Edge" type="tns:EdgeType"></element>
+    	</choice>
+    </complexType>
+
+    <complexType name="EdgeType">
+    	<attribute name="id" type="string"></attribute>
+    	<attribute name="source" type="string"></attribute>
+    	<attribute name="sourceHandle" type="int"></attribute>
+    	<attribute name="target" type="string"></attribute>
+    	<attribute name="targetHandle" type="int"></attribute>
+    </complexType>
+</schema>
