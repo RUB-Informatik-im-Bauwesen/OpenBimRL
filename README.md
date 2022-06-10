@@ -7,10 +7,6 @@
 > **E-Mail:** marcel.stepien@ruhr-uni-bochum.de
 <br>
 
-**Relevante und zusammenhängende Projekte:**
-- [OpenBimRL Creator-Tool](https://git.inf.bi.ruhr-uni-bochum.de/mbo2bim/openbimrl-creator-tool) 
-- [OpenBimRL Regelrepository](https://git.inf.bi.ruhr-uni-bochum.de/mbo2bim/openbimrl-regeln)
-
 ## 1. Beschreibung
 
 Angelehnt an der Graphen-basierten Programmierung (bspw. Dynamo und Grasshopper) beschreibt das OpenBimRL Format eine Regelsprache zur formellen und fachlichen Prüfung von Bauwerksmodellen. Das Format definiert eine dynamisch erweiterbare Schnittstelle auf derer Basis Bausteine für einen Graphen-basierten Prüfvorgang konstruiert und verknüpft werden können. Bei der Entwicklung wurde Wert auf Offenheit und Transparenz der Prüfungsdokumente gelegt. Im Gegensatz zu den meisten verfügbaren Regel- und Abfragesprachen ist es möglich sowohl Semantik als auch Geometrie zu prüfen, solange die verfügbare Engine die dazugehörigen Knoten und Kanten der Vorberechnung auflösen kann.
