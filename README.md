@@ -28,7 +28,7 @@ Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das 
 | ---      | ---          | 
 | default   | http://inf.bi.rub.de/OpenBimRL |
 | xsi   | http://www.w3.org/2001/XMLSchema-instance |
-| schemaLocation   | http://inf.bi.rub.de/OpenBimRL OpenBimRL.xsd |
+| schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
 
 **Übersetzt als XML-Instanz:**
 ```
