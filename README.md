@@ -2,8 +2,8 @@
 
 > **Schema:** XSD <br>
 > **Current Version:** 0.1 <br>
-> **Publication Date:** 20.05.2022 <br>
-> **Autors:** Andre Vonthron, Marcel Stepien <br>
+> **Publication Date:** 10.06.2022 <br>
+> **Autors:** Marcel Stepien, Andre Vonthron <br>
 > **E-Mail:** marcel.stepien@ruhr-uni-bochum.de
 <br>
 
@@ -13,7 +13,7 @@
 
 ## 1. Beschreibung
 
-Angelehnt an der graphen-basierten Programmierung (bspw. Dynamo und Grasshopper) beschreibt das OpenBimRL Format eine Regelsprache zur formellen und fachlichen Prüfung von Bauwerksmodellen. Das Format definiert eine dynamisch erweiterbare Schnittstelle auf derer Basis Bausteine für einen graphen-basierten Prüfvorgang konstruiert und verknüpft werden können. Bei der Entwicklung wurde Wert auf Offenheit und Transparenz der Prüfungdokumente gelegt. Im Gegensatz zu den meisten verfügbaren Regel- und Abfragesprachen ist es möglich sowohl Semantik als auch Geometrie zu prüfen, solange die verfügbaren Engines die dazugehörigen Knoten und Kanten der Vorberechnung auflösen können.
+Angelehnt an der Graphen-basierten Programmierung (bspw. Dynamo und Grasshopper) beschreibt das OpenBimRL Format eine Regelsprache zur formellen und fachlichen Prüfung von Bauwerksmodellen. Das Format definiert eine dynamisch erweiterbare Schnittstelle auf derer Basis Bausteine für einen Graphen-basierten Prüfvorgang konstruiert und verknüpft werden können. Bei der Entwicklung wurde Wert auf Offenheit und Transparenz der Prüfungsdokumente gelegt. Im Gegensatz zu den meisten verfügbaren Regel- und Abfragesprachen ist es möglich sowohl Semantik als auch Geometrie zu prüfen, solange die verfügbare Engine die dazugehörigen Knoten und Kanten der Vorberechnung auflösen kann.
 
 ## 2. Aufbau des Schemas und der Komponenten
 
@@ -22,7 +22,7 @@ Angelehnt an der graphen-basierten Programmierung (bspw. Dynamo und Grasshopper)
 > Das OpenBimRL Konzept setzt sich aus mehreren Bausteinen zusammen, welche in Kombination das Schema des Formats darstellen. 
 
 ### 2.1 OpenBimRL Schema
-Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das Format der Regel vorgibt. Es handelt sich dabei um das umschließende Element im Prüfdokument. Foldende Angaben sind hierbei mindestens anzugeben:
+Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das Format der Regel vorgibt. Es handelt sich dabei um das umschließende Element im Prüfdokument. Folgende Angaben sind hierbei mindestens anzugeben:
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
@@ -40,7 +40,7 @@ Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das 
     schemaVersion="0.1" 
     xmlns="http://inf.bi.rub.de/OpenBimRL" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://inf.bi.rub.de/OpenBimRL OpenBimRL.xsd">
+    xsi:schemaLocation="https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd">
 
     ...
 
@@ -79,7 +79,7 @@ Die Vorberechnungen enthalten einen Graphen mit Funktionen (als Knoten) und eine
 
 ##### 2.2.1 Knoten (Funktionen)
 
-Jedes Knoten-Element enthält input und output-elemente, dessen Attribute beschreiben wie viele Ein- und Ausgänge vorhanden sind und wie diese heißen. Inputs aud outputs sind jedoch nur optional. Ein nicht vorhanden sein dessen bedeutet, dass es entweder keine Eingänge oder Ausgänge gibt für diesen Knoten. Ein Knoten definitert sich demnach wie folgt:
+Jedes Knoten-Element enthält _input_ und _output_-Elemente, dessen Attribute beschreiben wie viele Ein- und Ausgänge vorhanden sind und wie diese benannt sind. Inputs und outputs sind jedoch nur optional. Ein nicht vorhanden sein dessen bedeutet, dass es keine Eingänge oder Ausgänge gibt für diesen Knoten. Ein Knoten definiert sich demnach wie folgt:
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
@@ -115,13 +115,13 @@ Jedes Knoten-Element enthält input und output-elemente, dessen Attribute beschr
 
 ##### 2.2.2 Kanten (Verbindungen/Beziehungen)
 
-Ein Kante verbindet immer einen Ausgang eines Knotens (Funktion) mit dem Eingang eines anderen Knotens (Funktion). Hierbei dürfen keine Zyklen entstehen! Der Graph ist nur für gerichtete nicht zyklische definitionen gültig. Eine Kante wird wie folgt definiert:
+Eine Kante verbindet immer einen Ausgang eines Knotens (Funktion) mit dem Eingang eines anderen Knotens (Funktion). Hierbei dürfen keine Zyklen entstehen! **Der Graph ist nur für gerichtete nicht zyklische Definitionen gültig.** Eine Kante wird wie folgt definiert:
 
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
 | Edge.id | Eindeutiger identifier der Kante (UUID). | f2f87b48-108e-4f38-1328-7e8924d89738 |
-| Edge.source | Eindeutiger identifier des ausgehenden referenzierten Knotens (UUID). | 25525f88-07e7-740b-7a79-d2294af8687a |
+| Edge.source | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | 25525f88-07e7-740b-7a79-d2294af8687a |
 | Edge.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 2 |
 | Edge.target | Eindeutiger identifier des eingehenden referenzierten Knotens (UUID). | f3d898d8-b958-3d79-084c-cce953f4b168 |
 | Edge.targetHandle | Nummer des adressierten Eingangs, angefangen bei 0.  | 1 |
@@ -169,7 +169,7 @@ Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüf
 ```
 
 ##### 2.3.1 RuleIdentifier zur Anknüpfung der Prüfung an die Vorberechnung
-Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnung (_Precalculation_-Komponente) und dem darauf angewandten Regeln her. Es wird durch ein _RuleIdentifier_ ein kalkuliertes Ergebnis aus dem Graphen zwischengespeichert, um diese durch Bedingungen verknüpft genauer zu untersuchen. Demnach müssen für einen _RuleIdentifier_ die quelle angegeben werden, explizit zur ausgewählten Augabe (eng. output). 
+Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnung (_Precalculation_-Komponente) und dem darauf angewandten Regeln her. Es wird durch ein _RuleIdentifier_ ein kalkuliertes Ergebnis aus dem Graphen zwischengespeichert, um diese durch Bedingungen verknüpft genauer zu untersuchen. Demnach müssen für einen _RuleIdentifier_ die Quelle angegeben werden, explizit zur ausgewählten Ausgabe (eng. output). 
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
@@ -178,11 +178,11 @@ Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnu
 | RuleIdentifier.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 0 |
 
 ##### 2.3.2 ModelSubCheck zur Verschachtelung mehrer Regeln und Bedingungen 
-Ein _ModelSubCheck_ fasst eine Gruppe von indiviuellen Anforderungen zusammen und erlaubt es diese als eigenständige Prüfung zu evaluieren. Der Teilprüfung kann über das Attribut _label_ ein vom Haut-prüfvorgang separater name verliehen werden. Solch ein _ModelSubCheck_ besteht aus zwei wesentlichen teilen, der _Applicability_ (de. Anwendbarkeit) und _Rules_ (de. Regeln). 
+Ein _ModelSubCheck_ fasst eine Gruppe von individuellen Anforderungen zusammen und erlaubt es diese als eigenständige Prüfung zu evaluieren. Der Teilprüfung kann über das Attribut _label_ ein vom Haut-Prüfvorgang separater Name verliehen werden. Solch ein _ModelSubCheck_ besteht aus zwei wesentlichen Teilen, der _Applicability_ (de. Anwendbarkeit) und _Rules_ (de. Regeln). 
 
 Bei der _Applicability_ handelt es sich um eine optionale Komponente, welche selbst eine kaskade von _Rules_ und _Rule_ Komponenten enthält. Durch die _Applicability_ kann zum ausdruck gebracht werden, ob und auf was eine Prüfung angewandt werden. Es beschreibt also einen Gültigkeitsbereich für untersuchte Elemente im Prüfprozess.
 
-Bei den Rules- und Rule-Komponenten handelt es sich um eine Kaskadierende Struktur von gruppierten Bedingungen. Einzelne Regeln (Rule-Komponent) und Gruppen von Regeln (Rules-Komponent) können verschachtelt werden um komplexere zusammenhänge zu prüfen. Dabei wird in der Regel immer eine Liste von Informationen (als _operand1_) gegen statische Werte getestet (als _operand2_). Dabei entsteht ein Prüfergebniss als Filtermaske, bestehend aus einer Liste _True_ und _False_ Werten, welche über eine Bezeichnung des Attributs _label_ für die Darstellung in den ResultSets zwischengehalten werden kann. Über die Attribute quantifier und operator kann definiert werden welche Mengen- und Prüfungsform gelten muss, damit die Prüfung erfolgreich abgeschlossen werden kann.
+Bei den Rules- und Rule-Komponenten handelt es sich um eine Kaskadierende Struktur von gruppierten Bedingungen. Einzelne Regeln (Rule-Komponente) und Gruppen von Regeln (Rules-Komponente) können verschachtelt werden um komplexere Zusammenhänge zu prüfen. Dabei wird in der Regel immer eine Liste von Informationen (als _operand1_) gegen statische Werte getestet (als _operand2_). Dabei entsteht ein Prüfergebnis als Filtermaske, bestehend aus einer Liste _True_ und _False_ Werten, welche über eine Bezeichnung des Attributs _label_ für die Darstellung in den ResultSets zwischengehalten werden kann. Über die Attribute _quantifier_ und _operator_ kann definiert werden welche Mengen- und Prüfungsform gelten muss, damit die Prüfung erfolgreich abgeschlossen werden kann.
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
@@ -194,11 +194,11 @@ Bei den Rules- und Rule-Komponenten handelt es sich um eine Kaskadierende Strukt
 | Rule2.operator | Der anzuwendende Operator für Boolsche-Operationen, zur Verknüpfung der Teilergebnisse. | or, and, xor |
 
 ##### 2.3.3 ResultSet zur Darstellung erwarteter Teilergebnisse
-Ein _ResultSet_ ermöglicht es Elemente aus der Vorberechnung mit Teil-Ergebnissen der Prüfung zu Filtern, wodurch Ansichten (Model Views) auf erfolgreich und nicht erfolgreich geprüfte Elemente erzeugt werden können. Dies wird möglich durch die Anwendung von Filtermasken auf eine Menge von prüfbaren Elementen, wodurch diese gefilterd wird. Ein _ResultSet_ benötigt drei Attribute zur definition, welche da wären einen _name_, _elements_ und _filter_.
+Ein _ResultSet_ ermöglicht es Elemente aus der Vorberechnung mit Teil-Ergebnissen der Prüfung zu Filtern, wodurch Ansichten (Model Views) auf erfolgreich und nicht erfolgreich geprüfte Elemente erzeugt werden können. Dies wird möglich durch die Anwendung von Filtermasken auf eine Menge von prüfbaren Elementen, wodurch diese gefiltert wird. Ein _ResultSet_ benötigt drei Attribute zur definition, welche da wären einen _name_, _elements_ und _filter_.
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
-| ResultSet.name | Eindeutige Bezeichnung unter derer die Ergebnisse der Prüfung zu verstehen sind. | Erfolgreich Geprüfte Elemente nach XYZ |
+| ResultSet.name | Eindeutige Bezeichnung unter derer die Ergebnisse der Prüfung zu verstehen sind. | Erfolgreich geprüfte Elemente nach XYZ |
 | ResultSet.elements | Die Liste von prüfbaren Elementen aus der Vorberechnung. | ifcWallEntities |
 | ResultSet.filter | Die Referenz auf die anzuwendene Filtermaske aus dem Prüfvorgang. | filterMaskA |
 
