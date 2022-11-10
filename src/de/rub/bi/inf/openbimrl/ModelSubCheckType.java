@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.1 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2022.05.05 um 03:12:58 PM CEST 
+// Generiert: 2022.11.10 um 10:08:44 PM CET 
 //
 
 
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="Applicability" type="{http://inf.bi.rub.de/OpenBimRL}ApplicablityType"/&gt;
+ *         &lt;element name="Applicability" type="{http://inf.bi.rub.de/OpenBimRL}ApplicabilityType"/&gt;
  *         &lt;element name="Rules" type="{http://inf.bi.rub.de/OpenBimRL}RulesType"/&gt;
  *       &lt;/sequence&gt;
  *       &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 public class ModelSubCheckType {
 
     @XmlElement(name = "Applicability", required = true)
-    protected ApplicablityType applicability;
+    protected ApplicabilityType applicability;
     @XmlElement(name = "Rules", required = true)
     protected RulesType rules;
     @XmlAttribute(name = "name")
@@ -55,10 +55,10 @@ public class ModelSubCheckType {
      * 
      * @return
      *     possible object is
-     *     {@link ApplicablityType }
+     *     {@link ApplicabilityType }
      *     
      */
-    public ApplicablityType getApplicability() {
+    public ApplicabilityType getApplicability() {
         return applicability;
     }
 
@@ -67,10 +67,10 @@ public class ModelSubCheckType {
      * 
      * @param value
      *     allowed object is
-     *     {@link ApplicablityType }
+     *     {@link ApplicabilityType }
      *     
      */
-    public void setApplicability(ApplicablityType value) {
+    public void setApplicability(ApplicabilityType value) {
         this.applicability = value;
     }
 

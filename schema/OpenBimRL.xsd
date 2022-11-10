@@ -136,13 +136,13 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     
     <complexType name="ModelSubCheckType">
     	<sequence>
-    		<element name="Applicability" type="tns:ApplicablityType"></element>
+    		<element name="Applicability" type="tns:ApplicabilityType"></element>
     		<element name="Rules" type="tns:RulesType"></element>
     	</sequence>
     	<attribute name="name" type="string"></attribute>
     </complexType>
 
-    <complexType name="ApplicablityType">
+    <complexType name="ApplicabilityType">
     	<choice>
     		<element ref="tns:Rule"></element>
     	</choice>
