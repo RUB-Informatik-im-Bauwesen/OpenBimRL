@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.1 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2022.11.10 um 10:08:44 PM CET 
+// Generiert: 2022.11.10 um 10:18:51 PM CET 
 //
 
 
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;choice&gt;
- *         &lt;element ref="{http://inf.bi.rub.de/OpenBimRL}Rule"/&gt;
+ *         &lt;element ref="{http://inf.bi.rub.de/OpenBimRL}Rules"/&gt;
  *       &lt;/choice&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,35 +35,35 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ApplicabilityType", propOrder = {
-    "rule"
+    "rules"
 })
 public class ApplicabilityType {
 
-    @XmlElement(name = "Rule")
-    protected RuleType rule;
+    @XmlElement(name = "Rules")
+    protected RulesType rules;
 
     /**
-     * Ruft den Wert der rule-Eigenschaft ab.
+     * Ruft den Wert der rules-Eigenschaft ab.
      * 
      * @return
      *     possible object is
-     *     {@link RuleType }
+     *     {@link RulesType }
      *     
      */
-    public RuleType getRule() {
-        return rule;
+    public RulesType getRules() {
+        return rules;
     }
 
     /**
-     * Legt den Wert der rule-Eigenschaft fest.
+     * Legt den Wert der rules-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
-     *     {@link RuleType }
+     *     {@link RulesType }
      *     
      */
-    public void setRule(RuleType value) {
-        this.rule = value;
+    public void setRules(RulesType value) {
+        this.rules = value;
     }
 
 }

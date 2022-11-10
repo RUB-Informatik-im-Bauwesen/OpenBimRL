@@ -144,7 +144,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 
     <complexType name="ApplicabilityType">
     	<choice>
-    		<element ref="tns:Rule"></element>
+    		<element ref="tns:Rules"></element>
     	</choice>
     </complexType>
     
