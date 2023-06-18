@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-VSK Software GmbH
+Copyright (c) 2023-2026 VSK Software GmbH, Bochum, Germany.
+
+This file contains modifications to the original OpenBimRL schema.
+The modified schema is distributed under the Creative Commons
+Attribution 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
+
 
 An Extension to OpenBIMRL to support multiple BIMRules under the same root.
 -->
