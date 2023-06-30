@@ -18,7 +18,7 @@ An Extension to OpenBIMRL to support multiple BIMRules under the same root.
 	xmlns="http://www.w3.org/2001/XMLSchema" 
 	xmlns:tns="http://inf.bi.rub.de/OpenBimRL">
 
-	<include schemaLocation="OpenBIMRL.xsd"/>
+	<include schemaLocation="OpenBimRL.xsd"/>
 
     <element name="OpenBIMRL" type="tns:OpenBIMRLType"></element>
     
