@@ -8,6 +8,13 @@
 > **Licence:** MIT (Java-Sources), CC-BY-4.0 (XSD Schema)
 <br>
 
+## 0. Vorwort
+
+Das Schema wurde im Rahmen des Workshops/Konferenz der [EG-ICE 2023](https://www.ucl.ac.uk/bartlett/construction/research/virtual-research-centres/institute-digital-innovation-built-environment/30th-eg-ice-1) vorgestellt. Das in dem Kontext Veröffentlichung [Paper](https://www.ucl.ac.uk/bartlett/construction/sites/bartlett_construction/files/5342.pdf) stellt dabei ein Bezug zu weiterführende prototypischen Implementierungen dar. Diese da wären:
+
+- [OpenBIMRL-Engine](https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL-Engine)
+- [OpenBIMRL-CreatorTool](https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL-CreatorTool)
+
 ## 1. Beschreibung
 
 Angelehnt an der graphenbasierten Programmierung (bspw. Dynamo und Grasshopper) beschreibt das OpenBimRL Format eine Regelsprache zur formellen und fachlichen Prüfung von Bauwerksmodellen. Das Format definiert eine dynamisch erweiterbare Schnittstelle, auf derer Basis Bausteine für einen graphenbasierten Prüfvorgang konstruiert und verknüpft werden können. Bei der Entwicklung wurde Wert auf Offenheit und Transparenz der Prüfungsdokumente gelegt. Im Gegensatz zu den meisten verfügbaren Regel- und Abfragesprachen ist es möglich sowohl Semantik als auch Geometrie zu prüfen, solange die verfügbare Engine die dazugehörigen Knoten und Kanten der Vorberechnung auflösen kann.
