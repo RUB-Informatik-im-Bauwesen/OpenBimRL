@@ -2,7 +2,7 @@
 
 > **Schema:** XSD <br>
 > **Current Version:** 0.1 <br>
-> **Publication Date:** 10.06.2022 <br>
+> **First Publication Date:** 10.06.2022 <br>
 > **Autors:** Marcel Stepien, Andre Vonthron <br>
 > **E-Mail:** marcel.stepien@ruhr-uni-bochum.de <br>
 > **Licence:** MIT (Java-Sources), CC-BY-4.0 (XSD Schema)
