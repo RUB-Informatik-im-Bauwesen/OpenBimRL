@@ -151,9 +151,11 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     
     <complexType name="ModelSubCheckType">
     	<sequence>
-    		<element name="Applicability" type="tns:ApplicabilityType"></element>
-			<choice maxOccurs="unbounded" minOccurs="1">
-				<element name="Rule" type="tns:RuleType"></element>
+    		<element name="Applicability"
+    			type="tns:ApplicabilityType">
+    		</element>
+    		<choice maxOccurs="unbounded" minOccurs="1">
+    			<element name="Rule" type="tns:RuleType"></element>
 				<element name="Rules" type="tns:RulesType"></element>
 			</choice>
 		</sequence>
