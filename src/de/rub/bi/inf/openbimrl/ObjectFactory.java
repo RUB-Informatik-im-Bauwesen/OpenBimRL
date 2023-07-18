@@ -1,8 +1,8 @@
 //
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.1 generiert 
+// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2022.11.10 um 10:18:51 PM CET 
+// Generiert: 2023.07.18 um 03:38:28 PM CEST 
 //
 
 
@@ -34,6 +34,7 @@ public class ObjectFactory {
     private final static QName _BIMRule_QNAME = new QName("http://inf.bi.rub.de/OpenBimRL", "BIMRule");
     private final static QName _Rule_QNAME = new QName("http://inf.bi.rub.de/OpenBimRL", "Rule");
     private final static QName _Rules_QNAME = new QName("http://inf.bi.rub.de/OpenBimRL", "Rules");
+    private final static QName _OpenBIMRL_QNAME = new QName("http://inf.bi.rub.de/OpenBimRL", "OpenBIMRL");
     private final static QName _NodeTypeDescription_QNAME = new QName("http://inf.bi.rub.de/OpenBimRL", "Description");
 
     /**
@@ -76,6 +77,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link OpenBIMRLType }
+     * 
+     */
+    public OpenBIMRLType createOpenBIMRLType() {
+        return new OpenBIMRLType();
+    }
+
+    /**
      * Create an instance of {@link InputType }
      * 
      */
@@ -89,6 +98,14 @@ public class ObjectFactory {
      */
     public OutputType createOutputType() {
         return new OutputType();
+    }
+
+    /**
+     * Create an instance of {@link GroupType }
+     * 
+     */
+    public GroupType createGroupType() {
+        return new GroupType();
     }
 
     /**
@@ -224,6 +241,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://inf.bi.rub.de/OpenBimRL", name = "Rules")
     public JAXBElement<RulesType> createRules(RulesType value) {
         return new JAXBElement<RulesType>(_Rules_QNAME, RulesType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link OpenBIMRLType }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link OpenBIMRLType }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://inf.bi.rub.de/OpenBimRL", name = "OpenBIMRL")
+    public JAXBElement<OpenBIMRLType> createOpenBIMRL(OpenBIMRLType value) {
+        return new JAXBElement<OpenBIMRLType>(_OpenBIMRL_QNAME, OpenBIMRLType.class, null, value);
     }
 
     /**

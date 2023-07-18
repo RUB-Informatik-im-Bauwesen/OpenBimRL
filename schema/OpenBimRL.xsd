@@ -25,6 +25,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="name" type="string"></attribute>
     	<attribute name="value" type="string"></attribute>
     </complexType>
+	
     <complexType name="NodeType">
     	<sequence>
     		<element name="Description" type="string" maxOccurs="1"
@@ -52,7 +53,19 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="id" type="string" use="required"></attribute>
     	<attribute name="function" type="string"></attribute>
     	<attribute name="alias" type="string"></attribute>
+    	<attribute name="xPos" type="int"></attribute>
+    	<attribute name="yPos" type="int"></attribute>
     </complexType>
+	
+	<complexType name="GroupType">
+    	<sequence>
+    		<element name="children" type="string" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="label" type="string" use="required"></attribute>
+    	<attribute name="color" type="string" use="required"></attribute>
+    </complexType>
+	
     <complexType name="BIMRuleType">
     	<sequence>
     		<element name="Precalculations"
@@ -62,7 +75,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     			maxOccurs="1" minOccurs="1">
     		</element>
     	</sequence>
-    	<attribute name="schemaVersion" type="string" use="required"></attribute>
+    	<attribute name="name" type="string" use="required"></attribute>
     </complexType>
 
     <complexType name="ModelCheckType">
@@ -124,6 +137,8 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="source" type="string" use="required"></attribute>
     	<attribute name="sourceHandle" type="int" use="required"></attribute>
     	<attribute name="label" type="string" use="required"></attribute>
+    	<attribute name="xPos" type="int"></attribute>
+    	<attribute name="yPos" type="int"></attribute>
     </complexType>
     
     <complexType name="ModelSubChecksType">
@@ -137,8 +152,11 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     <complexType name="ModelSubCheckType">
     	<sequence>
     		<element name="Applicability" type="tns:ApplicabilityType"></element>
-    		<element name="Rules" type="tns:RulesType"></element>
-    	</sequence>
+			<choice maxOccurs="unbounded" minOccurs="1">
+				<element name="Rule" type="tns:RuleType"></element>
+				<element name="Rules" type="tns:RulesType"></element>
+			</choice>
+		</sequence>
     	<attribute name="name" type="string"></attribute>
     </complexType>
 
@@ -167,8 +185,8 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 
     <complexType name="PrecalculationsType">
     	<choice maxOccurs="unbounded" minOccurs="1">
-    		<element name="Node" type="tns:NodeType">
-    		</element>
+    		<element name="Node" type="tns:NodeType"></element>
+    		<element name="Group" type="tns:GroupType"></element>
     		<element name="Edge" type="tns:EdgeType"></element>
     	</choice>
     </complexType>

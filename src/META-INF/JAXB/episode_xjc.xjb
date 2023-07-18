@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bindings version="2.1" xmlns="http://java.sun.com/xml/ns/jaxb">
+  <!--
+
+Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
+Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
+Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
+Generiert: 2023.07.18 um 03:38:28 PM CEST 
+
+  -->
+  <bindings scd="x-schema::tns" xmlns:tns="http://inf.bi.rub.de/OpenBimRL">
+    <schemaBindings map="false">
+      <package name="de.rub.bi.inf.openbimrl"/>
+    </schemaBindings>
+    <bindings scd="~tns:NodeType">
+      <class ref="de.rub.bi.inf.openbimrl.NodeType"/>
+    </bindings>
+    <bindings scd="~tns:BIMRuleType">
+      <class ref="de.rub.bi.inf.openbimrl.BIMRuleType"/>
+    </bindings>
+    <bindings scd="~tns:RuleType">
+      <class ref="de.rub.bi.inf.openbimrl.RuleType"/>
+    </bindings>
+    <bindings scd="~tns:RulesType">
+      <class ref="de.rub.bi.inf.openbimrl.RulesType"/>
+    </bindings>
+    <bindings scd="~tns:OpenBIMRLType">
+      <class ref="de.rub.bi.inf.openbimrl.OpenBIMRLType"/>
+    </bindings>
+    <bindings scd="~tns:InputType">
+      <class ref="de.rub.bi.inf.openbimrl.InputType"/>
+    </bindings>
+    <bindings scd="~tns:OutputType">
+      <class ref="de.rub.bi.inf.openbimrl.OutputType"/>
+    </bindings>
+    <bindings scd="~tns:GroupType">
+      <class ref="de.rub.bi.inf.openbimrl.GroupType"/>
+    </bindings>
+    <bindings scd="~tns:ModelCheckType">
+      <class ref="de.rub.bi.inf.openbimrl.ModelCheckType"/>
+    </bindings>
+    <bindings scd="~tns:RuleIdentifiersType">
+      <class ref="de.rub.bi.inf.openbimrl.RuleIdentifiersType"/>
+    </bindings>
+    <bindings scd="~tns:RuleIdentifierType">
+      <class ref="de.rub.bi.inf.openbimrl.RuleIdentifierType"/>
+    </bindings>
+    <bindings scd="~tns:ModelSubChecksType">
+      <class ref="de.rub.bi.inf.openbimrl.ModelSubChecksType"/>
+    </bindings>
+    <bindings scd="~tns:ModelSubCheckType">
+      <class ref="de.rub.bi.inf.openbimrl.ModelSubCheckType"/>
+    </bindings>
+    <bindings scd="~tns:ApplicabilityType">
+      <class ref="de.rub.bi.inf.openbimrl.ApplicabilityType"/>
+    </bindings>
+    <bindings scd="~tns:ResultSetType">
+      <class ref="de.rub.bi.inf.openbimrl.ResultSetType"/>
+    </bindings>
+    <bindings scd="~tns:ResultSetsType">
+      <class ref="de.rub.bi.inf.openbimrl.ResultSetsType"/>
+    </bindings>
+    <bindings scd="~tns:PrecalculationsType">
+      <class ref="de.rub.bi.inf.openbimrl.PrecalculationsType"/>
+    </bindings>
+    <bindings scd="~tns:EdgeType">
+      <class ref="de.rub.bi.inf.openbimrl.EdgeType"/>
+    </bindings>
+  </bindings>
+</bindings>
+

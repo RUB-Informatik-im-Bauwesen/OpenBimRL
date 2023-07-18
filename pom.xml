@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>inf.bi.rub.de</groupId>
   <artifactId>OpenBIMRL-API</artifactId>
-  <version>2022.11.1</version>
+  <version>2023.07.1</version>
   
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -22,6 +22,26 @@
           <release>13</release>
         </configuration>
       </plugin>
+      <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jaxb2-maven-plugin</artifactId>
+            <version>2.5.0</version>
+            <executions>
+                <execution>
+                    <id>xjc</id>
+                    <goals>
+                        <goal>xjc</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+            	<sources>
+            		<source>schema/OpenBimRL_Extension.xsd</source>
+            	</sources>
+            	<outputDirectory>${basedir}/src/</outputDirectory>
+            	<clearOutputDir>false</clearOutputDir>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
   

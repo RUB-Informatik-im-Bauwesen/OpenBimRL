@@ -1,8 +1,8 @@
 //
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.1 generiert 
+// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2022.11.10 um 10:18:51 PM CET 
+// Generiert: 2023.07.18 um 03:38:28 PM CEST 
 //
 
 
@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;attribute name="source" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *       &lt;attribute name="sourceHandle" use="required" type="{http://www.w3.org/2001/XMLSchema}int" /&gt;
  *       &lt;attribute name="label" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="xPos" type="{http://www.w3.org/2001/XMLSchema}int" /&gt;
+ *       &lt;attribute name="yPos" type="{http://www.w3.org/2001/XMLSchema}int" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
@@ -51,6 +53,10 @@ public class RuleIdentifierType {
     protected int sourceHandle;
     @XmlAttribute(name = "label", required = true)
     protected String label;
+    @XmlAttribute(name = "xPos")
+    protected Integer xPos;
+    @XmlAttribute(name = "yPos")
+    protected Integer yPos;
 
     /**
      * Ruft den Wert der message-Eigenschaft ab.
@@ -138,6 +144,54 @@ public class RuleIdentifierType {
      */
     public void setLabel(String value) {
         this.label = value;
+    }
+
+    /**
+     * Ruft den Wert der xPos-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *     
+     */
+    public Integer getXPos() {
+        return xPos;
+    }
+
+    /**
+     * Legt den Wert der xPos-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *     
+     */
+    public void setXPos(Integer value) {
+        this.xPos = value;
+    }
+
+    /**
+     * Ruft den Wert der yPos-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *     
+     */
+    public Integer getYPos() {
+        return yPos;
+    }
+
+    /**
+     * Legt den Wert der yPos-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *     
+     */
+    public void setYPos(Integer value) {
+        this.yPos = value;
     }
 
 }

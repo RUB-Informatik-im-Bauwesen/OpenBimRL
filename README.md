@@ -1,7 +1,7 @@
 # OpenBimRL
 
 > **Schema:** XSD <br>
-> **Current Version:** 2022.11.1 <br>
+> **Current Version:** 2023.07.1 <br>
 > **First Publication Date:** 10.06.2022 <br>
 > **Autors:** Marcel Stepien, André Vonthron <br>
 > **E-Mail:** marcel.stepien@ruhr-uni-bochum.de <br>
@@ -25,12 +25,28 @@ Angelehnt an der graphenbasierten Programmierung (bspw. Dynamo und Grasshopper) 
 
 > Das OpenBimRL Konzept setzt sich aus mehreren Bausteinen zusammen, welche in Kombination das Schema des Formats darstellen. 
 
-### 2.1 OpenBimRL Schema
-Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das Format der Regel vorgibt. Es handelt sich dabei um das umschließende Element im Prüfdokument. Folgende Angaben sind hierbei mindestens anzugeben:
+### 2.0 OpenBimRL Root-Element
+Das Root-Element von OpenBIMRL ist die OpenBIMRL-Komponente. Die Komponente Schachtelt eine Reihe von BIMRules, welche jeweils einen eigenen Prüfvorgang beschreiben. 
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
-| BIMRule.schemaVersion   | Angabe der Version mit welcher die vorliegende Prüfung erzeugt wurde. | 0.1   |
+| OpenBIMRL.schemaVersion   | Angabe der Version mit welcher die vorliegende Prüfung erzeugt wurde. | 0.1   |
+
+
+**Übersetzt als XML-Instanz:**
+```
+<OpenBIMRL schemaVersion="0.1" 
+    xmlns="http://inf.bi.rub.de/OpenBimRL" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL_Extension.xsd">
+
+    <BIMRule ...> ... </BIMRule>
+    <BIMRule ...> ... </BIMRule>
+    ...
+
+</OpenBIMRL>
+
+```
 
 | Namespace | URI | 
 | ---      | ---          | 
@@ -38,18 +54,21 @@ Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das 
 | xsi   | http://www.w3.org/2001/XMLSchema-instance |
 | schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
 
+### 2.1 OpenBimRL Schema
+Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das Format der Regel vorgibt. Es handelt sich dabei um das umschließende Element im Prüfdokument. Folgende Angaben sind hierbei mindestens anzugeben:
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| BIMRule.name   | Name des Regelsatzes. | "Checking primary Escape Route"   |
+
+
 **Übersetzt als XML-Instanz:**
 ```
-<BIMRule 
-    schemaVersion="0.1" 
-    xmlns="http://inf.bi.rub.de/OpenBimRL" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd">
+<BIMRule name="Checking primary Escape Route">
 
     ...
 
 </BIMRule>
-
 ```
 
 #### 2.2 Precalculations (Vorberechnung)
@@ -57,11 +76,7 @@ Die Vorberechnungen enthalten einen Graphen mit Funktionen (als Knoten) und eine
 
 **Übersetzt als XML-Instanz:**
 ```
-<BIMRule 
-    schemaVersion="0.1" 
-    xmlns="http://inf.bi.rub.de/OpenBimRL" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://inf.bi.rub.de/OpenBimRL OpenBimRL.xsd">
+<BIMRule ...>
 
     <!-- Precalculations enthalten einen Graphen zur Vorberechnung von Teilmengen und Ergebnissen für die Prüfung. -->
     <Precalculations>
@@ -97,14 +112,16 @@ Jedes Knoten-Element enthält _input_ und _output_-Elemente, dessen Attribute be
 **Übersetzt als XML-Instanz:**
 ```
 <!-- Knoten ohne Eingang: -->
-<Node id="25525f88-07e7-740b-7a79-d2294af8687a" function="input.textInput">
+<Node id="25525f88-07e7-740b-7a79-d2294af8687a" function="input.textInput" 
+    xPos="150" yPos="100">
     <Outputs>
         <Output name="text" value="NotwendigerFlur"/>
     </Outputs>
 </Node>
 
 <!-- Knoten mit Ein- und Ausgang: -->
-<Node id="f3d898d8-b958-3d79-084c-cce953f4b168" function="ifc.filterByProperty" alias="Example Text Here">
+<Node id="f3d898d8-b958-3d79-084c-cce953f4b168" function="ifc.filterByProperty" 
+    alias="Example Text Here" xPos="150" yPos="100">  
     <Inputs>
         <Input name="IfcElement List"/>
         <Input name="PropertySet Name"/>
@@ -140,6 +157,26 @@ Eine Kante verbindet immer einen Ausgang eines Knotens (Funktion) mit dem Eingan
     targetHandle="3"/>
 ```
 
+
+##### 2.2.3 Gruppen (Verschachteln von Knoten)
+Eine _Group_ verschachtelt Elemente aus dem Graphen der Vorberechnung (_Precalculation_-Komponente) und stellt diese im gemeinsamen Kontext dar. Diese Gruppierung ist dabei ein beschreibendes Objekt, indem es direkt auf die Komponenten der Graphen verweist und diese zusätzlich benennt.  
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Group.label | Benennung, bzw. Beschreibung der Gruppe. | "Sub-Rountine of ..." |
+| Group.id | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Group.color | Die Grundfarbe der Gruppe in Hexerdeximal-Schreibweise. | #fcba03 |
+| Group.children | Die liste der Knoten, welche zur Gruppe zugeordnet werden. | ["db5d...", "db5d..."] |
+
+**Übersetzt als XML-Instanz:**
+```
+<Group id="ba4d8538-209d-48a8-5165-6c813e164ba1" label="Sub-Routine of ..." color="#fcba03">
+    <children>25525f88-07e7-740b-7a79-d2294af8687a</children>
+    <children>f3d898d8-b958-3d79-084c-cce953f4b168</children>
+    ...
+</Group>
+```
+
 ### 2.3 ModelCheck (Modellprüfung)
 Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüfregel zusammen. Die _ModelCheck_-Komponente selbst definiert über das Attribut _name_ eine eindeutige und beschreibende Bezeichnung der Prüfregel. Ein ModelCheck setzt sich wiederum aus drei Sub-Komponenten zusammen, namentlich den _RuleIdentifier_, _ModelSubCheck_ und _ResultSet_.
 
@@ -149,8 +186,8 @@ Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüf
     ...
     <tns:ModelCheck name="Formeller Pruefvorgang">
 		<tns:RuleIdentifiers>
-			<tns:RuleIdentifier label="propertyValue" source="85d5009c-f8dc-1ccf-66c8-ce610713793a" sourceHandle="0"/>
-			<tns:RuleIdentifier label="ifcWallEntities" source="bc2a7431-9376-db5d-a12a-fe48e83bddbd" sourceHandle="0"/>
+			<tns:RuleIdentifier label="propertyValue" source="85d5009c-f8dc-1ccf-66c8-ce610713793a" sourceHandle="0" xPos="150" yPos="100"/>
+			<tns:RuleIdentifier label="ifcWallEntities" source="bc2a7431-9376-db5d-a12a-fe48e83bddbd" sourceHandle="0" xPos="150" yPos="100"/>
             ...
 		</tns:RuleIdentifiers>
 		<tns:ModelSubChecks>

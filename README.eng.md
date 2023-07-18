@@ -1,7 +1,7 @@
 # OpenBimRL
 
 > **Schema:** XSD <br>
-> **Current Version:** 0.1 <br>
+> **Current Version:** 2023.07.1 <br>
 > **First Publication Date:** 10.06.2022 <br>
 > **Autors:** Marcel Stepien, Andre Vonthron <br>
 > **E-Mail:** marcel.stepien@ruhr-uni-bochum.de <br>
@@ -25,12 +25,28 @@ Based on the idea of graph-based programming, the OpenBimRL format describes a r
 
 > The OpenBimRL concept is made up of several building blocks, which forms the general structure the schema.
 
-### 2.1 OpenBimRL Schema
-The main component of an OpenBimRL verification rule is called _BIMRule_, which specifies the format of the rule. It is the enclosing element in the verification document. The following information must be given as a minimum:
+### 2.0 OpenBimRL Root-Element
+The root element of OpenBIMRL is the OpenBIMRL component. The component nests a set of BIMRules, each of which describes a separate checking process.
 
-| Element.Attribut | Description | Example |
+| Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
 | BIMRule.schemaVersion   | Specification of the version with which the current test was generated. | 0.1   |
+
+
+**Translated as XML instance:**
+```
+<OpenBIMRL schemaVersion="0.1" 
+    xmlns="http://inf.bi.rub.de/OpenBimRL" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL_Extension.xsd">
+
+    <BIMRule ...> ... </BIMRule>
+    <BIMRule ...> ... </BIMRule>
+    ...
+
+</OpenBIMRL>
+
+```
 
 | Namespace | URI | 
 | ---      | ---          | 
@@ -38,18 +54,21 @@ The main component of an OpenBimRL verification rule is called _BIMRule_, which 
 | xsi   | http://www.w3.org/2001/XMLSchema-instance |
 | schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
 
+### 2.1 OpenBimRL Schema
+The main component of an OpenBimRL verification rule is called _BIMRule_, which specifies the format of the rule. It is the enclosing element in the verification document. The following information must be given as a minimum:
+
+| Element.Attribut | Description | Example |
+| ---      | ---          | ---      |
+| BIMRule.name   | Name of the rule set. | "Checking primary Escape Route"   |
+
+
 **Translated as XML instance:**
 ```
-<BIMRule 
-    schemaVersion="0.1" 
-    xmlns="http://inf.bi.rub.de/OpenBimRL" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd">
+<BIMRule name="Checking primary Escape Route">
 
     ...
 
 </BIMRule>
-
 ```
 
 #### 2.2 Precalculations
@@ -57,11 +76,7 @@ The precalculations contain a graph with functions (as nodes) and a connection b
 
 **Translated as XML instance:**
 ```
-<BIMRule 
-    schemaVersion="0.1" 
-    xmlns="http://inf.bi.rub.de/OpenBimRL" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://inf.bi.rub.de/OpenBimRL OpenBimRL.xsd">
+<BIMRule ...>
 
     <!-- Precalculations contain a graph for pre-calculating subsets and results for the exam. -->
     <Precalculations>
@@ -90,6 +105,8 @@ Each node element contains _input_ and _output_ elements. Their attributes descr
 | Node.id | Unique identifier of the node (UUID). | f2f87b48-108e-4f38-1328-7e8924d89738 |
 | Node.function | Name and path of the function this node executes. | ifc.filterByProperty |
 | Node.alias | A user-defined text describing the node. | Example Text Here |
+| Node.xPos | The x-axis coordinate to enter a position. | 120 |
+| Node.yPos | The y-axis coordinate to enter a position. | 320 |
 | Input.name | Display name of the input. | PropertySetName |
 | Output.name | Display name of the output. | IfcElement List |
 | Output.value | User-defined value of the output. | Pset_WallCommon |
@@ -97,14 +114,16 @@ Each node element contains _input_ and _output_ elements. Their attributes descr
 **Translated as XML instance:**
 ```
 <!-- Node without entrance: -->
-<Node id="25525f88-07e7-740b-7a79-d2294af8687a" function="input.textInput">
+<Node id="25525f88-07e7-740b-7a79-d2294af8687a" function="input.textInput" 
+    xPos="150" yPos="100">
     <Outputs>
         <Output name="text" value="NotwendigerFlur"/>
     </Outputs>
 </Node>
 
 <!-- Node with input and output: -->
-<Node id="f3d898d8-b958-3d79-084c-cce953f4b168" function="ifc.filterByProperty" alias="Example Text Here">
+<Node id="f3d898d8-b958-3d79-084c-cce953f4b168" function="ifc.filterByProperty" 
+    alias="Example Text Here" xPos="150" yPos="100">
     <Inputs>
         <Input name="IfcElement List"/>
         <Input name="PropertySet Name"/>
@@ -139,6 +158,26 @@ An edge always connects an output of a node (function) with the input of another
     targetHandle="3"/>
 ```
 
+##### 2.2.3 Groups (Node nesting)
+A _Group_ nests elements from the graph of the precalculation (_Precalculation_ component) and represents them in the common context. This grouping is thereby a descriptive object, in that it refers directly to the components of the graphs and additionally names them.
+
+| Element.Attribut | Description | Example |
+| ---      | ---          | ---      |
+| Group.label | Naming, or description of the group. | "Sub-Rountine of ..." |
+| Group.id | Unique identifier of the group node (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Group.color | The base color of the group in Hexerdeximal notation. | #fcba03 |
+| Group.children | The list of nodes that will be assigned to the group. | ["db5d...", "db5d..."] |
+
+**Translated as XML instance:**
+```
+<Group id="ba4d8538-209d-48a8-5165-6c813e164ba1" label="Sub-Routine of ..." color="#fcba03">
+    <children>25525f88-07e7-740b-7a79-d2294af8687a</children>
+    <children>f3d898d8-b958-3d79-084c-cce953f4b168</children>
+    ...
+</Group>
+```
+
+
 ### 2.3 ModelCheck (model test)
 The _ModelCheck_ component summarises all conditions and expected values of the checking rule. The _ModelCheck_ component itself defines a unique and descriptive name of the checking rule via the _name_ attribute. A ModelCheck is composed of three sub-components, namely the _RuleIdentifier_, _ModelSubCheck_ and _ResultSet_.
 
@@ -148,8 +187,8 @@ The _ModelCheck_ component summarises all conditions and expected values of the 
     ...
     <tns:ModelCheck name="Formeller Pruefvorgang">
 		<tns:RuleIdentifiers>
-			<tns:RuleIdentifier label="propertyValue" source="85d5009c-f8dc-1ccf-66c8-ce610713793a" sourceHandle="0"/>
-			<tns:RuleIdentifier label="ifcWallEntities" source="bc2a7431-9376-db5d-a12a-fe48e83bddbd" sourceHandle="0"/>
+			<tns:RuleIdentifier label="propertyValue" source="85d5009c-f8dc-1ccf-66c8-ce610713793a" sourceHandle="0" xPos="200" yPos="300"/>
+			<tns:RuleIdentifier label="ifcWallEntities" source="bc2a7431-9376-db5d-a12a-fe48e83bddbd" sourceHandle="0" xPos="150" yPos="100"/>
             ...
 		</tns:RuleIdentifiers>
 		<tns:ModelSubChecks>

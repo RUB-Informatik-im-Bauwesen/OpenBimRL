@@ -1,17 +1,20 @@
 //
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.1 generiert 
+// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2022.11.10 um 10:18:51 PM CET 
+// Generiert: 2023.07.18 um 03:38:28 PM CEST 
 //
 
 
 package de.rub.bi.inf.openbimrl;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -26,7 +29,10 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="Applicability" type="{http://inf.bi.rub.de/OpenBimRL}ApplicabilityType"/&gt;
- *         &lt;element name="Rules" type="{http://inf.bi.rub.de/OpenBimRL}RulesType"/&gt;
+ *         &lt;choice maxOccurs="unbounded"&gt;
+ *           &lt;element name="Rule" type="{http://inf.bi.rub.de/OpenBimRL}RuleType"/&gt;
+ *           &lt;element name="Rules" type="{http://inf.bi.rub.de/OpenBimRL}RulesType"/&gt;
+ *         &lt;/choice&gt;
  *       &lt;/sequence&gt;
  *       &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *     &lt;/restriction&gt;
@@ -39,14 +45,17 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ModelSubCheckType", propOrder = {
     "applicability",
-    "rules"
+    "ruleOrRules"
 })
 public class ModelSubCheckType {
 
     @XmlElement(name = "Applicability", required = true)
     protected ApplicabilityType applicability;
-    @XmlElement(name = "Rules", required = true)
-    protected RulesType rules;
+    @XmlElements({
+        @XmlElement(name = "Rule", type = RuleType.class),
+        @XmlElement(name = "Rules", type = RulesType.class)
+    })
+    protected List<Object> ruleOrRules;
     @XmlAttribute(name = "name")
     protected String name;
 
@@ -75,27 +84,33 @@ public class ModelSubCheckType {
     }
 
     /**
-     * Ruft den Wert der rules-Eigenschaft ab.
+     * Gets the value of the ruleOrRules property.
      * 
-     * @return
-     *     possible object is
-     *     {@link RulesType }
-     *     
-     */
-    public RulesType getRules() {
-        return rules;
-    }
-
-    /**
-     * Legt den Wert der rules-Eigenschaft fest.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the ruleOrRules property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link RulesType }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getRuleOrRules().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link RuleType }
+     * {@link RulesType }
+     * 
+     * 
      */
-    public void setRules(RulesType value) {
-        this.rules = value;
+    public List<Object> getRuleOrRules() {
+        if (ruleOrRules == null) {
+            ruleOrRules = new ArrayList<Object>();
+        }
+        return this.ruleOrRules;
     }
 
     /**

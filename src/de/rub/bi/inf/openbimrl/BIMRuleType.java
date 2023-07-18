@@ -1,8 +1,8 @@
 //
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.1 generiert 
+// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2022.11.10 um 10:18:51 PM CET 
+// ï¿½nderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
+// Generiert: 2023.07.18 um 03:38:28 PM CEST 
 //
 
 
@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für BIMRuleType complex type.
+ * <p>Java-Klasse fï¿½r BIMRuleType complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="Precalculations" type="{http://inf.bi.rub.de/OpenBimRL}PrecalculationsType" minOccurs="0"/&gt;
  *         &lt;element name="ModelCheck" type="{http://inf.bi.rub.de/OpenBimRL}ModelCheckType"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attribute name="schemaVersion" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "BIMRule", propOrder = {
+@XmlType(name = "BIMRuleType", propOrder = {
     "precalculations",
     "modelCheck"
 })
@@ -49,8 +49,8 @@ public class BIMRuleType {
     protected PrecalculationsType precalculations;
     @XmlElement(name = "ModelCheck", required = true)
     protected ModelCheckType modelCheck;
-    @XmlAttribute(name = "schemaVersion", required = true)
-    protected String schemaVersion;
+    @XmlAttribute(name = "name", required = true)
+    protected String name;
 
     /**
      * Ruft den Wert der precalculations-Eigenschaft ab.
@@ -101,27 +101,27 @@ public class BIMRuleType {
     }
 
     /**
-     * Ruft den Wert der schemaVersion-Eigenschaft ab.
+     * Ruft den Wert der name-Eigenschaft ab.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getSchemaVersion() {
-        return schemaVersion;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Legt den Wert der schemaVersion-Eigenschaft fest.
+     * Legt den Wert der name-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setSchemaVersion(String value) {
-        this.schemaVersion = value;
+    public void setName(String value) {
+        this.name = value;
     }
 
 }
