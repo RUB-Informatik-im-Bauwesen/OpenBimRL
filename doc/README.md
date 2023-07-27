@@ -214,9 +214,20 @@ Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnu
 | RuleIdentifier.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 0 |
 
 ##### 1.1.2.2 Teilprüfung (Model-sub-check)
-Ein _ModelSubCheck_ fasst eine Gruppe von individuellen Anforderungen zusammen und erlaubt es diese als eigenständige Prüfung zu evaluieren. Der Teilprüfung kann über das Attribut _label_ ein vom Haupt-Prüfvorgang separater Name verliehen werden. Solch ein _ModelSubCheck_ besteht aus zwei wesentlichen Teilen, der _Applicability_ (de. Anwendbarkeit) und _Rules_ (de. Regeln).
+Ein _ModelSubCheck_ fasst eine Gruppe von individuellen Anforderungen zusammen und 
+erlaubt es diese als eigenständige Prüfung zu evaluieren. Der Teilprüfung kann über 
+das Attribut _label_ ein vom Haupt-Prüfvorgang separater Name verliehen werden. 
 
-Bei der _Applicability_ handelt es sich um eine optionale Komponente, welche selbst eine Kaskade von _Rules_ und _Rule_ Komponenten enthält. Durch die _Applicability_ kann zum Ausdruck gebracht werden, ob und auf was eine Prüfung angewandt wird. Es beschreibt also einen Gültigkeitsbereich für untersuchte Elemente im Prüfprozess.
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| ModelSubCheck.name | Name der Prüfung | Abgleich der Gebäudeklasse |
+| ModelSubCheck.description | Beschreibungsfeld | Der Abgleich der Gebäudeklasse überprüft... |
+
+Ein _ModelSubCheck_ besteht aus zwei wesentlichen Teilen, der _Applicability_ (de. Anwendbarkeit) 
+und _Rules_ (de. Regeln). Bei der _Applicability_ handelt es sich um eine optionale Komponente, 
+welche selbst eine Kaskade von _Rules_ und _Rule_ Komponenten enthält. 
+Durch die _Applicability_ kann zum Ausdruck gebracht werden, ob und auf was eine Prüfung angewandt wird. 
+Es beschreibt also einen Gültigkeitsbereich für untersuchte Elemente im Prüfprozess.
 
 Bei den Rules- und Rule-Komponenten handelt es sich um eine kaskadierende Struktur von gruppierten Bedingungen. Einzelne Regeln (Rule-Komponente) und Gruppen von Regeln (Rules-Komponente) können verschachtelt werden, um komplexere Zusammenhänge zu prüfen. Dabei wird in der Regel immer eine Liste von Informationen (als _operand1_) gegen statische Werte getestet (als _operand2_). Dabei entsteht ein Prüfergebnis als Filtermaske, bestehend aus einer Liste _True_ und _False_ Werten, welche über eine Bezeichnung des Attributs _label_ für die Darstellung in den ResultSets zwischengehalten werden kann. Über die Attribute _quantifier_ und _operator_ kann definiert werden, welche Mengen- und Prüfungsform gelten muss, damit die Prüfung erfolgreich abgeschlossen werden kann.
 

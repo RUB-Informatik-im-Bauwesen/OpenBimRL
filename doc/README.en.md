@@ -215,11 +215,28 @@ A _RuleIdentifier_ establishes a connection between the graph of the precalculat
 | RuleIdentifier.sourceHandle | Number of the addressed output, starting with 0. | 0 |
 
 ##### 1.1.2.2 Model subcheck
-A _ModelSubCheck_ summarises a group of individual requirements and allows them to be evaluated as a single test. The sub-check can be given a name separate from the main check via the _label_ attribute. Such a _ModelSubCheck_ consists of two main parts, _Applicability_ and _Rules_.
+A _ModelSubCheck_ summarises a group of individual requirements and 
+allows them to be evaluated as a single test. 
 
-The _Applicability_ is an optional component which itself contains a cascade of _Rules_ and _Rule_ components. The _Applicability_ can be used to apply a filter prior to rule checking. Only a set of valid elements are processed in the rule checking.
+| Element.Attribut | Description | Example |
+| ---      | ---          | ---      |
+| ModelSubCheck.name | Label field | Building class |
+| ModelSubCheck.description | Description field | The building class check determines, if ... |
+The sub-check can be given a name separate 
+from the main check via the _label_ attribute. Such a _ModelSubCheck_ consists of two main parts, _Applicability_ and _Rules_.
 
-The rules and rule components are a cascading structure of grouped conditions. Individual rules (rule component) and groups of rules (rules component) can be nested to test more complex relationships. Usually, a list of information (as _operand1_) is always tested against static values (as _operand2_). This produces a test result as a filter mask, consisting of a list of _True_ and _False_ values, which can be intermediately held via a designation of the attribute _label_ in the ResultSets. The _quantifier_ and _operator_ attributes are used to set the logical constraints so that it can be determined whether the check can be completed successfully.
+The _Applicability_ is an optional component that itself contains a cascade 
+of _Rules_ and _Rule_ components. The _Applicability_ can be used to apply a filter 
+prior to rule checking. Only a set of valid elements are processed in the rule checking.
+
+The rules and rule components are a cascading structure of grouped conditions. 
+Individual rules (rule component) and groups of rules (rules component) can be nested 
+to test more complex relationships. Usually, a list of information (as _operand1_) 
+is always tested against static values (as _operand2_). This produces a test result as a 
+filter mask, consisting of a list of _True_ and _False_ values, which can be 
+intermediately held via a designation of the attribute _label_ in the ResultSets. 
+The _quantifier_ and _operator_ attributes are used to set the logical constraints 
+so that it can be determined whether the check can be completed successfully.
 
 | Element.Attribut | Description | Example |
 | ---      | ---          | ---      |
