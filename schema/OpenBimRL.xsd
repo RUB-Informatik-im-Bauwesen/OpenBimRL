@@ -154,7 +154,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     		<element name="Applicability"
     			type="tns:ApplicabilityType">
     		</element>
-    		<choice maxOccurs="unbounded" minOccurs="1">
+    		<choice maxOccurs="unbounded" minOccurs="0">
     			<element name="Rule" type="tns:RuleType"></element>
 				<element name="Rules" type="tns:RulesType"></element>
 			</choice>
@@ -164,9 +164,10 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     </complexType>
 
     <complexType name="ApplicabilityType">
-    	<choice>
-    		<element ref="tns:Rules"></element>
-    	</choice>
+    	<choice maxOccurs="unbounded" minOccurs="0">
+   			<element name="Rule" type="tns:RuleType"></element>
+   			<element name="Rules" type="tns:RulesType"></element>
+   		</choice>
     </complexType>
     
     <complexType name="ResultSetType">
