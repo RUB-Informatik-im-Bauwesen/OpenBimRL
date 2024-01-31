@@ -172,6 +172,50 @@ A _Group_ nests elements from the graph of the precalculation (_Precalculation_ 
 </Group>
 ```
 
+##### 1.1.1.4 Cluster
+
+Clusters make it possible to manage subgraphs as user-specific nodes.  
+The _input_ and _output elements_ of a cluster are defined and controlled by the corresponding _ClusterInput_ and _ClusterOutput nodes_.
+
+| Element.Attribute | Description | Example |
+| --- | --- | --- |
+| Cluster.id | Unique identifier of the referenced outgoing node (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Cluster.label | Name or description of the cluster. | "Sub-Routine of ..." |
+| Cluster.subGraph | A list of nodes, edges, groups, and clusters (the cluster's graph). | [ \<Node ... /\>, \<Node ... /\>, ..., \<Edge ... /\>] |
+| Cluster.color | The base color of the cluster in hexadecimal notation. | #fcba03 |
+| Cluster.xPos | x-position of the cluster node. | 300 |
+| Cluster.yPos | y-position of the cluster node. | 200 |
+
+The IDs of _ClusterInput_ and _ClusterOutput nodes_ follow a strict naming convention and are derived from the ID of the cluster itself. A suffix is appended to the ID to indicate which referenced input or output the node represents. Accordingly, the ID must be constructed using the following scheme:
+
+* `clusterInput.id = cluster.id + '_I_' + inputIndex`
+* `clusterOutput.id = cluster.id + '_O_' + outputIndex`
+
+**Translated as XML instance:**
+```
+<Cluster id="c303da93-c6be-4f5a-be63-8ee3502cd268" label="A clustered SubGraph" color="#00D9FF" xPos="1996" yPos="1187">
+    <Inputs>
+        <ClusterInput name="In[0]"/>
+        <ClusterInput name="In[1]"/>
+    </Inputs>
+    <Outputs>
+        <ClusterOutput name="Out[0]"/>
+    </Outputs>
+    <SubGraph>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_0" function="input.clusterInput" alias="In[0]" xPos="1453" yPos="1120">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_1" function="input.clusterInput" alias="In[1]" xPos="1453" yPos="1220">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_O_0" function="input.clusterOutput" alias="Out[0]" xPos="2874" yPos="1120">
+            <Inputs>  <Input name="Out[0]"/> </Inputs>
+        </Node>
+        ...
+    </SubGraph>
+</Cluster>
+```
+
 
 ### 1.1.2 Model Check
 The _ModelCheck_ component summarises all conditions and expected values of the checking rule. The _ModelCheck_ component itself defines a unique and descriptive name of the checking rule via the _name_ attribute. A ModelCheck is composed of three sub-components, namely the _RuleIdentifier_, _ModelSubCheck_ and _ResultSet_.

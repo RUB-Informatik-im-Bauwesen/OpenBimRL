@@ -9,6 +9,7 @@ die nachfolgende beschrieben werden:
             - [1.1.1.1 Knoten](#1111-knoten-nodes)
             - [1.1.1.2 Kanten](#1112-kanten-edges)
             - [1.1.1.3 Gruppen](#1113-gruppen-groups)
+            - [1.1.1.4 Cluster](#1114-cluster)
         - [1.1.2 Modellprüfung](#112-modellprüfung-modelcheck)
             - [1.1.2.1 Rule-Identifier](#1121-ruleidentifier)
             - [1.1.2.2 Teil-Prüfung](#1122-teilprüfung-model-sub-check)
@@ -171,6 +172,55 @@ Eine _Group_ gruppiert Elemente aus dem Graphen der Vorberechnung (_Precalculati
     ...
 </Group>
 ```
+
+##### 1.1.1.4 Cluster
+
+Cluster ermöglichen es, Teil-Graphen als nutzerspezifische Knoten zu verwalten.  
+Die _input_ und _output-Elemente_ eines Clusters sind über die Teilelemente _ClusterInput-_ und 
+_ClusterOutput-Knoten_ definiert und gesteuert. 
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Cluster.id | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Cluster.label | Benennung, bzw. Beschreibung des Klusters. | "Sub-Rountine of ..." |
+| Cluster.subGraph | Eine liste von Knoten, Kanten, Gruppen und Kluster (Graph des Klusters). | [ <Node ... />, <Node ... />, ..., <Edge ... />] |
+| Cluster.color | Die Grundfarbe des Klusters in Hexerdeximal-Schreibweise. | #fcba03 |
+| Cluster.xPos | x-Position des Cluster-Knotens | 300 |
+| Cluster.yPos | y-Position des Cluster-Knotens | 200 |
+
+Die id von _ClusterInput-_ und _ClusterOutput-Knoten_ ist strikt vorgegeben und wird durch die id 
+des Clusters selbst abgeleitet. Als post-fix wird ein Hinweis der id angehangen, um welchen referenzierten Input 
+oder Output es sich bei dem Knoten handelt. Demnach ist die Form des id nach folgendem Schema zu konstruieren:
+
+* _clusterInput.id = cluster.id + '_I_' + inputIndex_
+* _clusterOutput.id = cluster.id + '_O_' + outputIndex_
+
+
+**Übersetzt als XML-Instanz:**
+```
+<Cluster id="c303da93-c6be-4f5a-be63-8ee3502cd268" label="A clustered SubGraph" color="#00D9FF" xPos="1996" yPos="1187">
+    <Inputs>
+        <ClusterInput name="In[0]"/>
+        <ClusterInput name="In[1]"/>
+    </Inputs>
+    <Outputs>
+        <ClusterOutput name="Out[0]"/>
+    </Outputs>
+    <SubGraph>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_0" function="input.clusterInput" alias="In[0]" xPos="1453" yPos="1120">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_1" function="input.clusterInput" alias="In[1]" xPos="1453" yPos="1220">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_O_0" function="input.clusterOutput" alias="Out[0]" xPos="2874" yPos="1120">
+            <Inputs>  <Input name="Out[0]"/> </Inputs>
+        </Node>
+        ...
+    </SubGraph>
+</Cluster>
+```
+
 
 ### 1.1.2 Modellprüfung (ModelCheck)
 Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüfregel zusammen. Die _ModelCheck_-Komponente selbst definiert über das Attribut _name_ eine eindeutige und beschreibende Bezeichnung der Prüfregel. Ein ModelCheck setzt sich wiederum aus drei Sub-Komponenten zusammen, namentlich den _RuleIdentifier_, _ModelSubCheck_ und _ResultSet_.
