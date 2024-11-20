@@ -55,6 +55,7 @@ The main component of an OpenBimRL verification rule is called _BIMRule_, which 
 | Element.Attribut | Description | Example |
 | ---      | ---          | ---      |
 | BIMRule.name   | Name of the rule set. | "Checking primary Escape Route"   |
+| BIMRule.uuid   | Unique UUID | [a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}] |
 
 
 **Translated as XML instance:**

@@ -5,8 +5,16 @@ OpenBimRL (c) by Lehrstuhl für Informatik im Bauwesen, Ruhr-Universität Bochum
 OpenBimRL is licensed under a
 Creative Commons Attribution 4.0 International License.
 
+Modifications:
+Copyright (c) 2023-2026 VSK Software GmbH, Bochum, Germany.
+
+This file contains modifications to the original OpenBimRL schema.
+The modified schema is distributed under the Creative Commons
+Attribution 4.0 International License.
+
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
+
 -->
 <schema targetNamespace="http://inf.bi.rub.de/OpenBimRL" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://inf.bi.rub.de/OpenBimRL">
 
@@ -111,6 +119,15 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     		</element>
     		<element name="ModelCheck" type="tns:ModelCheckType"
     			maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="uuid">
+		        <simpleType>
+		            <restriction base="ID">
+		                <pattern
+		                    value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}">
+		                </pattern>
+		            </restriction>
+		        </simpleType>
     		</element>
     	</sequence>
     	<attribute name="name" type="string" use="required"></attribute>
@@ -241,4 +258,5 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="target" type="string"></attribute>
     	<attribute name="targetHandle" type="int"></attribute>
     </complexType>
+
 </schema>
