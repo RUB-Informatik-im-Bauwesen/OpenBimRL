@@ -55,7 +55,8 @@ Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das 
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
-| BIMRule.name   | Name des Regelsatzes. | "Checking primary Escape Route"   |
+| BIMRule.name   | Name des Regelsatzes. | "Rettungsweg-Prüfung"   |
+| BIMRule.description | Beschreibung des Regelsatzes | "Es wird geprüft, ob hinterlegte Rettungswege..."   |
 | BIMRule.uuid   | Eindeutige UUID | [a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}] |
 
 

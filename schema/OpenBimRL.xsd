@@ -131,6 +131,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     		</element>
     	</sequence>
     	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="description" type="string"></attribute>
     </complexType>
 
     <complexType name="ModelCheckType">
