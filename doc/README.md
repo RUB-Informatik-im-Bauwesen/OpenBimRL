@@ -96,13 +96,14 @@ Die Vorberechnungen enthalten einen Graphen mit Funktionen (als Knoten) und eine
 
 ##### 1.1.1.1 Knoten (Nodes)
 
-Jedes Knoten-Element enthält _input_ und _output_-Elemente, dessen Attribute beschreiben, wie viele Ein- und Ausgänge vorhanden sind und wie diese benannt sind. Inputs und outputs sind jedoch nur optional. Ein nicht vorhanden sein dessen bedeutet, dass es keine Eingänge oder Ausgänge gibt für diesen Knoten. Ein Knoten definiert sich demnach wie folgt:
+Jedes Knoten-Element enthält _input_ und _output_-Elemente, deren Attribute beschreiben, wie viele Ein- und Ausgänge vorhanden sind und wie diese benannt sind. Inputs und outputs sind jedoch nur optional. Ein nicht vorhanden sein dessen bedeutet, dass es keine Eingänge oder Ausgänge gibt für diesen Knoten. Ein Knoten definiert sich demnach wie folgt:
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
 | Node.id | Eindeutiger identifier des Knotens (UUID). | f2f87b48-108e-4f38-1328-7e8924d89738 |
 | Node.function | Name und Pfad der Funktion, die dieser Knoten ausführt. | ifc.filterByProperty |
 | Node.alias | Ein vom Nutzer definierter Text zur Beschreibung des Knotens. | Example Text Here |
+| Node.debug | Möglichkeit, den Debug-Status zu setzen, um Zwischenausgaben für browsergestützte Systeme zu (de-)aktivieren | true |
 | Input.name | Angezeige Name des Eingangs. | PropertySetName |
 | Output.name | Angezeige Name des Ausgangs. | IfcElement List |
 | Output.value | Nutzerdefinierter Wert des Ausgangs. | Pset_WallCommon |

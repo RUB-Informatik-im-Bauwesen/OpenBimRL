@@ -104,6 +104,7 @@ Each node element contains _input_ and _output_ elements. Their attributes descr
 | Node.alias | A user-defined text describing the node. | Example Text Here |
 | Node.xPos | The x-axis coordinate to enter a position. | 120 |
 | Node.yPos | The y-axis coordinate to enter a position. | 320 |
+| Node.debug | Option to set debug mode to can (de-)activate for web-based system | true |
 | Input.name | Display name of the input. | PropertySetName |
 | Output.name | Display name of the output. | IfcElement List |
 | Output.value | User-defined value of the output. | Pset_WallCommon |
