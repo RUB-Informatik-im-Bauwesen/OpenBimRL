@@ -266,6 +266,8 @@ Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnu
 | RuleIdentifier.label | Eindeutige Bezeichnung, unter derer der RuleIdentifier in der Regelprüfung verwendet wird. | ifcWallEntities |
 | RuleIdentifier.source | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fe48e83bddbd |
 | RuleIdentifier.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 0 |
+| RuleIdentifier.hidden | Option, um Ausgaben auszublenden, falls sie nicht als Ausgabe sichtbar sein sollen. | true |
+
 
 ##### 1.1.2.2 Teilprüfung (Model-sub-check)
 Ein _ModelSubCheck_ fasst eine Gruppe von individuellen Anforderungen zusammen und 

@@ -197,6 +197,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="label" type="string" use="required"></attribute>
     	<attribute name="xPos" type="int"></attribute>
     	<attribute name="yPos" type="int"></attribute>
+    	<attribute name="hidden" type="boolean"></attribute>
     </complexType>
     
     <complexType name="ModelSubChecksType">

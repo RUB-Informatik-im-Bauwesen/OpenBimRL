@@ -261,6 +261,7 @@ A _RuleIdentifier_ establishes a connection between the graph of the precalculat
 | RuleIdentifier.label | Unique term under which the RuleIdentifier is used in the rule check. | ifcWallEntities |
 | RuleIdentifier.source | Unique identifier of the outgoing referenced node (UUID). | bc2a7431-9376-db5d-a12a-fe48e83bddbd |
 | RuleIdentifier.sourceHandle | Number of the addressed output, starting with 0. | 0 |
+| RuleIdentifier.hidden | Option to mark as hidden to divide into purpose of output listing and addtional checking context. | true |
 
 ##### 1.1.2.2 Model subcheck
 A _ModelSubCheck_ summarises a group of individual requirements and 
