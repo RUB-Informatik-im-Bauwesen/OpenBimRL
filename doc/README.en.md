@@ -188,6 +188,7 @@ The _input_ and _output elements_ of a cluster are defined and controlled by the
 | Cluster.color | The base color of the cluster in hexadecimal notation. | #fcba03 |
 | Cluster.xPos | x-position of the cluster node. | 300 |
 | Cluster.yPos | y-position of the cluster node. | 200 |
+| Cluster.debug | Option to set debug mode to can (de-)activate for web-based system | true |
 
 The IDs of _ClusterInput_ and _ClusterOutput nodes_ follow a strict naming convention and are derived from the ID of the cluster itself. A suffix is appended to the ID to indicate which referenced input or output the node represents. Accordingly, the ID must be constructed using the following scheme:
 

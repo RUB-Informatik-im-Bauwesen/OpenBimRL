@@ -190,6 +190,7 @@ _ClusterOutput-Knoten_ definiert und gesteuert.
 | Cluster.color | Die Grundfarbe des Klusters in Hexerdeximal-Schreibweise. | #fcba03 |
 | Cluster.xPos | x-Position des Cluster-Knotens | 300 |
 | Cluster.yPos | y-Position des Cluster-Knotens | 200 |
+| Cluster.debug | Möglichkeit, den Debug-Status zu setzen, um Zwischenausgaben für browsergestützte Systeme zu (de-)aktivieren | true |
 
 Die id von _ClusterInput-_ und _ClusterOutput-Knoten_ ist strikt vorgegeben und wird durch die id 
 des Clusters selbst abgeleitet. Als post-fix wird ein Hinweis der id angehangen, um welchen referenzierten Input 

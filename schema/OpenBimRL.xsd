@@ -111,6 +111,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="color" type="string" use="required"></attribute>
     	<attribute name="xPos" type="int"></attribute>
     	<attribute name="yPos" type="int"></attribute>
+    	<attribute name="debug" type="boolean"></attribute>
     </complexType>
 
     <complexType name="BIMRuleType">
