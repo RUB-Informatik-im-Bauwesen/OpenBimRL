@@ -1,10 +1,26 @@
 ## Aufbau des Schemas und der Komponenten
 
+Das Schema unterteilt sich in verschiedene Unterkomponenten,
+die nachfolgende beschrieben werden:
+
+1. [OpenBIMRL-Root-Element](#1-openbimrl-root-element)
+    - [1.1 BIM-Regel](#11-bim-regel-bim-rule)
+        - [1.1.1 Vorberechnungen](#111-vorberechnungen-pre-calculations)
+            - [1.1.1.1 Knoten](#1111-knoten-nodes)
+            - [1.1.1.2 Kanten](#1112-kanten-edges)
+            - [1.1.1.3 Gruppen](#1113-gruppen-groups)
+        - [1.1.2 Modellprüfung](#112-modellprüfung-modelcheck)
+            - [1.1.2.1 Rule-Identifier](#1121-ruleidentifier)
+            - [1.1.2.2 Teil-Prüfung](#1122-teilprüfung-model-sub-check)
+            - [1.1.2.3 Ergebnismenge](#1123-ergebnismenge-result-set)
+2. [Glossar](#4-glossar)
+
+
 ![OpenBimRL Konzeptgrafik](images/OpenBimRL-Konzeptgrafik.png "Konzeptgrafik")
 
 > Das OpenBimRL Konzept setzt sich aus mehreren Bausteinen zusammen, welche in Kombination das Schema des Formats darstellen.
 
-### OpenBimRL Root-Element
+### 1. OpenBimRL Root-Element
 Das Root-Element von OpenBIMRL ist die OpenBIMRL-Komponente. Die Komponente Schachtelt eine Reihe von BIMRules, welche jeweils einen eigenen Prüfvorgang beschreiben.
 
 | Element.Attribut | Beschreibung | Beispiel |
@@ -33,7 +49,7 @@ Das Root-Element von OpenBIMRL ist die OpenBIMRL-Komponente. Die Komponente Scha
 | xsi   | http://www.w3.org/2001/XMLSchema-instance |
 | schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
 
-### 1 OpenBimRL Schema
+### 1.1 BIM-Regel (BIM-Rule)
 Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das Format der Regel vorgibt. Es handelt sich dabei um das umschließende Element im Prüfdokument. Folgende Angaben sind hierbei mindestens anzugeben:
 
 | Element.Attribut | Beschreibung | Beispiel |
@@ -50,7 +66,7 @@ Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das 
 </BIMRule>
 ```
 
-#### 2 Precalculations (Vorberechnung)
+#### 1.1.1 Vorberechnungen (Pre-calculations)
 Die Vorberechnungen enthalten einen Graphen mit Funktionen (als Knoten) und eine Verbindung zwischen Ein- und Ausgängen (als Kanten). Der Graph bildet dabei einen Vorgang und/oder Algorithmus ab, dessen Teilergebnisse zwischengehalten werden können, um diese in den Regeln der Modellprüfung zu verwenden.
 
 **Übersetzt als XML-Instanz:**
@@ -75,7 +91,7 @@ Die Vorberechnungen enthalten einen Graphen mit Funktionen (als Knoten) und eine
 </BIMRule>
 ```
 
-##### 2.1 Knoten (Funktionen)
+##### 1.1.1.1 Knoten (Nodes)
 
 Jedes Knoten-Element enthält _input_ und _output_-Elemente, dessen Attribute beschreiben, wie viele Ein- und Ausgänge vorhanden sind und wie diese benannt sind. Inputs und outputs sind jedoch nur optional. Ein nicht vorhanden sein dessen bedeutet, dass es keine Eingänge oder Ausgänge gibt für diesen Knoten. Ein Knoten definiert sich demnach wie folgt:
 
@@ -113,7 +129,7 @@ Jedes Knoten-Element enthält _input_ und _output_-Elemente, dessen Attribute be
 </Node>
 ```
 
-##### 2.2 Kanten (Verbindungen/Beziehungen)
+##### 1.1.1.2 Kanten (Edges)
 
 Eine Kante verbindet immer einen Ausgang eines Knotens (Funktion) mit dem Eingang eines anderen Knotens (Funktion). Hierbei dürfen keine Zyklen definiert werden! **Der Graph ist nur für gerichtete, nicht zyklische Definitionen gültig.** Eine Kante wird wie folgt definiert:
 
@@ -137,8 +153,8 @@ Eine Kante verbindet immer einen Ausgang eines Knotens (Funktion) mit dem Eingan
 ```
 
 
-##### 2.3 Gruppen (Verschachteln von Knoten)
-Eine _Group_ verschachtelt Elemente aus dem Graphen der Vorberechnung (_Precalculation_-Komponente) und stellt diese im gemeinsamen Kontext dar. Diese Gruppierung ist dabei ein beschreibendes Objekt, indem es direkt auf die Komponenten der Graphen verweist und diese zusätzlich benennt.
+##### 1.1.1.3 Gruppen (Groups)
+Eine _Group_ gruppiert Elemente aus dem Graphen der Vorberechnung (_Precalculation_-Komponente) und stellt diese im gemeinsamen Kontext dar. Diese Gruppierung ist dabei ein beschreibendes Objekt, indem es direkt auf die Komponenten der Graphen verweist und diese zusätzlich benennt.
 
 | Element.Attribut | Beschreibung | Beispiel |
 | ---      | ---          | ---      |
@@ -156,7 +172,7 @@ Eine _Group_ verschachtelt Elemente aus dem Graphen der Vorberechnung (_Precalcu
 </Group>
 ```
 
-### 3 ModelCheck (Modellprüfung)
+### 1.1.2 Modellprüfung (ModelCheck)
 Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüfregel zusammen. Die _ModelCheck_-Komponente selbst definiert über das Attribut _name_ eine eindeutige und beschreibende Bezeichnung der Prüfregel. Ein ModelCheck setzt sich wiederum aus drei Sub-Komponenten zusammen, namentlich den _RuleIdentifier_, _ModelSubCheck_ und _ResultSet_.
 
 **Übersetzt als XML-Instanz:**
@@ -188,7 +204,7 @@ Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüf
 </tns:BIMRule>
 ```
 
-##### 3.1 RuleIdentifier zur Anknüpfung der Prüfung an die Vorberechnung
+##### 1.1.2.1 RuleIdentifier
 Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnung (_Precalculation_-Komponente) und den darauf angewandten Regeln her. Es wird durch ein _RuleIdentifier_ ein kalkuliertes Ergebnis aus dem Graphen zwischengespeichert, um diese durch Bedingungen verknüpft genauer zu untersuchen. Demnach müssen für einen _RuleIdentifier_ die Quelle angegeben werden, explizit zur ausgewählten Ausgabe (eng. output).
 
 | Element.Attribut | Beschreibung | Beispiel |
@@ -197,7 +213,7 @@ Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnu
 | RuleIdentifier.source | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fe48e83bddbd |
 | RuleIdentifier.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 0 |
 
-##### 3.2 ModelSubCheck zur Verschachtelung mehrerer Regeln und Bedingungen
+##### 1.1.2.2 Teilprüfung (Model-sub-check)
 Ein _ModelSubCheck_ fasst eine Gruppe von individuellen Anforderungen zusammen und erlaubt es diese als eigenständige Prüfung zu evaluieren. Der Teilprüfung kann über das Attribut _label_ ein vom Haupt-Prüfvorgang separater Name verliehen werden. Solch ein _ModelSubCheck_ besteht aus zwei wesentlichen Teilen, der _Applicability_ (de. Anwendbarkeit) und _Rules_ (de. Regeln).
 
 Bei der _Applicability_ handelt es sich um eine optionale Komponente, welche selbst eine Kaskade von _Rules_ und _Rule_ Komponenten enthält. Durch die _Applicability_ kann zum Ausdruck gebracht werden, ob und auf was eine Prüfung angewandt wird. Es beschreibt also einen Gültigkeitsbereich für untersuchte Elemente im Prüfprozess.
@@ -213,7 +229,7 @@ Bei den Rules- und Rule-Komponenten handelt es sich um eine kaskadierende Strukt
 | Rule.operator2 | Ein statischer Wert, gegen den geprüft werden soll. | feuerbeständig |
 | Rule2.operator | Der anzuwendende Operator für Boolsche-Operationen, zur Verknüpfung der Teilergebnisse. | or, and, xor |
 
-##### 3.3 ResultSet zur Darstellung erwarteter Teilergebnisse
+##### 1.1.2.3 Ergebnismenge (Result-Set)
 Ein _ResultSet_ ermöglicht es Elemente aus der Vorberechnung mit Teil-Ergebnissen der Prüfung zu filtern, wodurch Ansichten (Model Views) auf erfolgreich und nicht erfolgreich geprüfte Elemente erzeugt werden können. Dies wird möglich durch die Anwendung von Filtermasken auf eine Menge von prüfbaren Elementen, wodurch diese gefiltert wird. Ein _ResultSet_ benötigt drei Attribute zur Definition, welche da wären einen _name_, _elements_ und _filter_.
 
 | Element.Attribut | Beschreibung | Beispiel |
@@ -222,7 +238,7 @@ Ein _ResultSet_ ermöglicht es Elemente aus der Vorberechnung mit Teil-Ergebniss
 | ResultSet.elements | Die Liste von prüfbaren Elementen aus der Vorberechnung. | ifcWallEntities |
 | ResultSet.filter | Die Referenz auf die anzuwendende Filtermaske aus dem Prüfvorgang. | filterMaskA |
 
-## 4. Begriffe und Definitionen
+## 4. Glossar
 
 **Abfragesprache** ist ein aus der Aussagenlogik und Grammatik entsprungenes Sprachkonstrukt, welche die Grundlage für die deklarative Programmierung bilden. In einer Abfragesprache werden Beziehungen von Informationen abgebildet und deren Schlussfolgerungen gemäß vorliegender Fakten abgeleitet. Eine Abfrage operiert auf einer Datengrundlage (Datenbank). Ihre Ausführung erzeugt dabei Teilmengen (Sichten, Selektionen) von Objekten und Informationen aus der Datengrundlage.
 
