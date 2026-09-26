@@ -25,7 +25,7 @@ Based on the idea of graph-based programming, the OpenBimRL format describes a r
 
 > The OpenBimRL concept is made up of several building blocks, which forms the general structure the schema.
 
-### 2.0 OpenBimRL Root-Element
+### 1. OpenBimRL Root-Element
 The root element of OpenBIMRL is the OpenBIMRL component. The component nests a set of BIMRules, each of which describes a separate checking process.
 
 | Element.Attribut | Beschreibung | Beispiel |
@@ -54,7 +54,7 @@ The root element of OpenBIMRL is the OpenBIMRL component. The component nests a 
 | xsi   | http://www.w3.org/2001/XMLSchema-instance |
 | schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
 
-### 2.1 OpenBimRL Schema
+### 1.1 OpenBimRL Schema
 The main component of an OpenBimRL verification rule is called _BIMRule_, which specifies the format of the rule. It is the enclosing element in the verification document. The following information must be given as a minimum:
 
 | Element.Attribut | Description | Example |
@@ -71,7 +71,7 @@ The main component of an OpenBimRL verification rule is called _BIMRule_, which 
 </BIMRule>
 ```
 
-#### 2.2 Precalculations
+#### 1.2 Precalculations
 The precalculations contain a graph with functions (as nodes) and a connection between inputs and outputs (as edges). The graph represents a process and/or algorithm, whose partial results can be stored temporarily for use in rules for model checking.
 
 **Translated as XML instance:**
@@ -96,7 +96,7 @@ The precalculations contain a graph with functions (as nodes) and a connection b
 </BIMRule>
 ```
 
-##### 2.2.1 Nodes (functions)
+##### 1.2.1 Nodes (functions)
 
 Each node element contains _input_ and _output_ elements. Their attributes describe how many inputs and outputs are present and how they are named. However, inputs and outputs are only optional. A non-existence of these means that there are no inputs or outputs for this node. A node is therefore defined as follows:
 
@@ -136,7 +136,7 @@ Each node element contains _input_ and _output_ elements. Their attributes descr
 </Node>
 ```
 
-##### 2.2.2 Edges ( connections/relations)
+##### 1.2.2 Edges ( connections/relations)
 
 An edge always connects an output of a node (function) with the input of another node (function). No cycles may occur here! **The graph is only valid for directed non-cyclic definitions.** An edge is defined as follows:
 
@@ -158,7 +158,7 @@ An edge always connects an output of a node (function) with the input of another
     targetHandle="3"/>
 ```
 
-##### 2.2.3 Groups (Node nesting)
+##### 1.2.3 Groups (Node nesting)
 A _Group_ nests elements from the graph of the precalculation (_Precalculation_ component) and represents them in the common context. This grouping is thereby a descriptive object, in that it refers directly to the components of the graphs and additionally names them.
 
 | Element.Attribut | Description | Example |
@@ -211,7 +211,7 @@ The _ModelCheck_ component summarises all conditions and expected values of the 
 ```
 
 ##### 2.3.1 RuleIdentifier for linking the check to the precalculation
-A _RuleIdentifier_ establishes a connection between the graph of the precalculation (_Precalculation_ component) and the rules applied to it. A _RuleIdentifier_ temporarily stores a calculated result from the graph in order to examine it in more detail linked by conditions. Accordingly, the source must be specified for a _RuleIdentifier_, explicit to the selected output. 
+A _RuleIdentifier_ establishes a connection between the graph of the precalculation (_Precalculation_ component) and the rules applied to it. A _RuleIdentifier_ temporarily stores a calculated result from the graph in order to examine it in more detail linked by conditions. Accordingly, the source must be specified for a _RuleIdentifier_, explicit to the selected output.
 
 | Element.Attribut | Description | Example |
 | ---      | ---          | ---      |
@@ -219,8 +219,8 @@ A _RuleIdentifier_ establishes a connection between the graph of the precalculat
 | RuleIdentifier.source | Unique identifier of the outgoing referenced node (UUID). | bc2a7431-9376-db5d-a12a-fe48e83bddbd |
 | RuleIdentifier.sourceHandle | Number of the addressed output, starting with 0. | 0 |
 
-##### 2.3.2 ModelSubCheck for nesting multiple rules and conditions 
-A _ModelSubCheck_ summarises a group of individual requirements and allows them to be evaluated as a single test. The sub-check can be given a name separate from the main check via the _label_ attribute. Such a _ModelSubCheck_ consists of two main parts, _Applicability_ and _Rules_. 
+##### 2.3.2 ModelSubCheck for nesting multiple rules and conditions
+A _ModelSubCheck_ summarises a group of individual requirements and allows them to be evaluated as a single test. The sub-check can be given a name separate from the main check via the _label_ attribute. Such a _ModelSubCheck_ consists of two main parts, _Applicability_ and _Rules_.
 
 The _Applicability_ is an optional component which itself contains a cascade of _Rules_ and _Rule_ components. The _Applicability_ can be used to apply a filter prior to rule checking. Only a set of valid elements are processed in the rule checking.
 
@@ -258,6 +258,6 @@ In the **functional check**, it is necessary to prove the information supply of 
 
 In the context of OpenBimRL, **building models** are always BIM-based models in the Industry Foundation Classes (IFC) format. IFC is a construct of classes that define a digital building.
 
-The term **semantics** is understood to mean descriptive information about a building component, which is predominantly aimed at the textual definition of individual pieces of information. However, semantic information is not necessarily bound to an object, so structural specifications (building > storey > room) can also be interpreted as semantic information. 
+The term **semantics** is understood to mean descriptive information about a building component, which is predominantly aimed at the textual definition of individual pieces of information. However, semantic information is not necessarily bound to an object, so structural specifications (building > storey > room) can also be interpreted as semantic information.
 
 **Geometry** is the representation and position of an object in a global space. Geometric distortions, transformations, and operators can also be used to generate statements from the set (for example, the intersection between two or more objects = collision). Geometry is usually used to derive parameters from its representation.
