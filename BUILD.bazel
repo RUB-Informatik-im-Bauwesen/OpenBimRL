@@ -1,0 +1,17 @@
+load("@rules_java//java:defs.bzl", "java_library")
+
+package(default_visibility = ["//visibility:public"])
+
+java_library(
+    name = "openbimrl_api",
+    srcs = glob(["src/**/*.java"]),
+    deps = [
+        "@maven//:javax_xml_bind_jaxb_api",
+        "@maven//:org_glassfish_jaxb_jaxb_runtime",
+    ],
+)
+
+alias(
+    name = "schema",
+    actual = ":openbimrl_api",
+)

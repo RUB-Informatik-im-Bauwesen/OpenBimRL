@@ -1,7 +1,7 @@
 //
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// ƒnderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
+// ¬ùnderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
 // Generiert: 2023.07.18 um 03:38:28 PM CEST 
 //
 
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f¸r NodeType complex type.
+ * <p>Java-Klasse f¬ùr NodeType complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -68,6 +68,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "NodeType", propOrder = {
     "description",
+    "script",
     "inputs",
     "outputs"
 })
@@ -75,6 +76,8 @@ public class NodeType {
 
     @XmlElementRef(name = "Description", namespace = "http://inf.bi.rub.de/OpenBimRL", type = JAXBElement.class, required = false)
     protected JAXBElement<String> description;
+    @XmlElement(name = "Script")
+    protected ScriptType script;
     @XmlElement(name = "Inputs")
     protected NodeType.Inputs inputs;
     @XmlElement(name = "Outputs")
@@ -112,6 +115,30 @@ public class NodeType {
      */
     public void setDescription(JAXBElement<String> value) {
         this.description = value;
+    }
+
+    /**
+     * Ruft den Wert der script-Eigenschaft ab.
+     *
+     * @return
+     *     possible object is
+     *     {@link ScriptType }
+     *
+     */
+    public ScriptType getScript() {
+        return script;
+    }
+
+    /**
+     * Legt den Wert der script-Eigenschaft fest.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link ScriptType }
+     *
+     */
+    public void setScript(ScriptType value) {
+        this.script = value;
     }
 
     /**
@@ -284,7 +311,7 @@ public class NodeType {
 
 
     /**
-     * <p>Java-Klasse f¸r anonymous complex type.
+     * <p>Java-Klasse f¬ùr anonymous complex type.
      * 
      * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
      * 
@@ -344,7 +371,7 @@ public class NodeType {
 
 
     /**
-     * <p>Java-Klasse f¸r anonymous complex type.
+     * <p>Java-Klasse f¬ùr anonymous complex type.
      * 
      * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
      * 

@@ -1,0 +1,27 @@
+"""OpenBimRL-Schema — XSD + JAXB model for OpenBimRL documents.
+
+Consumed by OpenBimRL-Engine via local_path_override (monorepo) or as a
+standalone Java library (`java_library` //:openbimrl_api).
+"""
+
+module(
+    name = "openbimrl_schema",
+    version = "2026.09.28",
+)
+
+bazel_dep(name = "rules_java", version = "9.8.0")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "javax.xml.bind:jaxb-api:2.3.1",
+        "org.glassfish.jaxb:jaxb-runtime:2.3.1",
+        "javax.xml.bind:activation:1.0.2",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+        "https://maven-central.storage-download.googleapis.com/maven2",
+    ],
+)
+use_repo(maven, "maven")

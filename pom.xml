@@ -1,8 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>inf.bi.rub.de</groupId>
-  <artifactId>OpenBIMRL-API</artifactId>
+  <groupId>de.rub.bi.inf.openbimrl</groupId>
+  <artifactId>schema</artifactId>
   <version>2023.07.1</version>
+  <name>OpenBimRL Schema</name>
+  <description>XSD schema and JAXB model for OpenBimRL documents</description>
   
   <build>
     <sourceDirectory>src</sourceDirectory>

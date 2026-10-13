@@ -1,7 +1,7 @@
 //
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.3.2 generiert 
 // Siehe <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// ƒnderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
+// ¬ùnderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
 // Generiert: 2023.07.18 um 03:38:28 PM CEST 
 //
 
@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f¸r OutputType complex type.
+ * <p>Java-Klasse f¬ùr OutputType complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -40,6 +40,10 @@ public class OutputType {
     protected String name;
     @XmlAttribute(name = "value")
     protected String value;
+    @XmlAttribute(name = "typeHint")
+    protected String typeHint;
+    @XmlAttribute(name = "collectionType")
+    protected String collectionType;
 
     /**
      * Ruft den Wert der name-Eigenschaft ab.
@@ -87,6 +91,54 @@ public class OutputType {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Ruft den Wert der typeHint-Eigenschaft ab.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getTypeHint() {
+        return typeHint;
+    }
+
+    /**
+     * Legt den Wert der typeHint-Eigenschaft fest.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setTypeHint(String value) {
+        this.typeHint = value;
+    }
+
+    /**
+     * Ruft den Wert der collectionType-Eigenschaft ab.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getCollectionType() {
+        return collectionType;
+    }
+
+    /**
+     * Legt den Wert der collectionType-Eigenschaft fest.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setCollectionType(String value) {
+        this.collectionType = value;
     }
 
 }

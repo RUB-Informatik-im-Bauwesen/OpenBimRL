@@ -24,12 +24,27 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     <complexType name="OutputType">
     	<attribute name="name" type="string"></attribute>
     	<attribute name="value" type="string"></attribute>
+    	<!-- Optional mapper type hints for script/Code nodes (backward compatible). -->
+    	<attribute name="typeHint" type="string"></attribute>
+    	<attribute name="collectionType" type="string"></attribute>
+    </complexType>
+
+    <!-- Embedded per-node script body for script.customScript / Code nodes. -->
+    <complexType name="ScriptType">
+    	<simpleContent>
+    		<extension base="string">
+    			<attribute name="language" type="string" default="kotlin"></attribute>
+    		</extension>
+    	</simpleContent>
     </complexType>
 	
     <complexType name="NodeType">
     	<sequence>
     		<element name="Description" type="string" maxOccurs="1"
     			minOccurs="0" nillable="true">
+    		</element>
+    		<element name="Script" type="tns:ScriptType" maxOccurs="1"
+    			minOccurs="0">
     		</element>
     		<element minOccurs="0" maxOccurs="1" name="Inputs">
     			<complexType>
