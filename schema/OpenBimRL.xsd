@@ -5,8 +5,16 @@ OpenBimRL (c) by Lehrstuhl für Informatik im Bauwesen, Ruhr-Universität Bochum
 OpenBimRL is licensed under a
 Creative Commons Attribution 4.0 International License.
 
+Modifications:
+Copyright (c) 2023-2026 VSK Software GmbH, Bochum, Germany.
+
+This file contains modifications to the original OpenBimRL schema.
+The modified schema is distributed under the Creative Commons
+Attribution 4.0 International License.
+
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
+
 -->
 <schema targetNamespace="http://inf.bi.rub.de/OpenBimRL" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://inf.bi.rub.de/OpenBimRL">
 
@@ -25,7 +33,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="name" type="string"></attribute>
     	<attribute name="value" type="string"></attribute>
     </complexType>
-	
+
     <complexType name="NodeType">
     	<sequence>
     		<element name="Description" type="string" maxOccurs="1"
@@ -51,12 +59,13 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     		</element>
     	</sequence>
     	<attribute name="id" type="string" use="required"></attribute>
-    	<attribute name="function" type="string"></attribute>
+    	<attribute name="function" type="string" use="required"></attribute>
     	<attribute name="alias" type="string"></attribute>
     	<attribute name="xPos" type="int"></attribute>
     	<attribute name="yPos" type="int"></attribute>
+    	<attribute name="debug" type="boolean"></attribute>
     </complexType>
-	
+
 	<complexType name="GroupType">
     	<sequence>
     		<element name="children" type="string" maxOccurs="unbounded" minOccurs="1"></element>
@@ -65,7 +74,46 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="label" type="string" use="required"></attribute>
     	<attribute name="color" type="string" use="required"></attribute>
     </complexType>
-	
+
+    <complexType name="ClusterType">
+    	<sequence>
+	   		<element minOccurs="0" maxOccurs="1" name="Inputs">
+	   			<complexType>
+	   				<sequence minOccurs="1" maxOccurs="unbounded">
+	   					<element name="ClusterInput" type="tns:InputType"
+	   						maxOccurs="unbounded" minOccurs="0">
+	   					</element>
+	   				</sequence>
+	   			</complexType>
+	   		</element>
+	    	<element minOccurs="0" maxOccurs="1" name="Outputs">
+	   			<complexType>
+	   				<sequence minOccurs="1" maxOccurs="unbounded">
+	   					<element name="ClusterOutput" type="tns:OutputType"
+	   						maxOccurs="unbounded" minOccurs="0">
+	   					</element>
+	   				</sequence>
+	   			</complexType>
+	   		</element>
+	   		<element minOccurs="0" maxOccurs="1" name="SubGraph">
+	   			<complexType>
+	   				<choice maxOccurs="unbounded" minOccurs="1">
+			    		<element name="Node" type="tns:NodeType"></element>
+			    		<element name="Cluster" type="tns:ClusterType"></element>
+			    		<element name="Group" type="tns:GroupType"></element>
+			    		<element name="Edge" type="tns:EdgeType"></element>
+			    	</choice>
+	   			</complexType>
+	   		</element>
+    	</sequence>
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="label" type="string" use="required"></attribute>
+    	<attribute name="color" type="string" use="required"></attribute>
+    	<attribute name="xPos" type="int"></attribute>
+    	<attribute name="yPos" type="int"></attribute>
+    	<attribute name="debug" type="boolean"></attribute>
+    </complexType>
+
     <complexType name="BIMRuleType">
     	<sequence>
     		<element name="Precalculations"
@@ -74,8 +122,18 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     		<element name="ModelCheck" type="tns:ModelCheckType"
     			maxOccurs="1" minOccurs="1">
     		</element>
+    		<element name="uuid">
+		        <simpleType>
+		            <restriction base="ID">
+		                <pattern
+		                    value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}">
+		                </pattern>
+		            </restriction>
+		        </simpleType>
+    		</element>
     	</sequence>
     	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="description" type="string"></attribute>
     </complexType>
 
     <complexType name="ModelCheckType">
@@ -139,6 +197,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="label" type="string" use="required"></attribute>
     	<attribute name="xPos" type="int"></attribute>
     	<attribute name="yPos" type="int"></attribute>
+    	<attribute name="hidden" type="boolean"></attribute>
     </complexType>
     
     <complexType name="ModelSubChecksType">
@@ -151,19 +210,23 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     
     <complexType name="ModelSubCheckType">
     	<sequence>
-    		<element name="Applicability" type="tns:ApplicabilityType"></element>
-			<choice maxOccurs="unbounded" minOccurs="1">
-				<element name="Rule" type="tns:RuleType"></element>
+    		<element name="Applicability"
+    			type="tns:ApplicabilityType">
+    		</element>
+    		<choice maxOccurs="unbounded" minOccurs="0">
+    			<element name="Rule" type="tns:RuleType"></element>
 				<element name="Rules" type="tns:RulesType"></element>
 			</choice>
 		</sequence>
     	<attribute name="name" type="string"></attribute>
+    	<attribute name="description" type="string"></attribute>
     </complexType>
 
     <complexType name="ApplicabilityType">
-    	<choice>
-    		<element ref="tns:Rules"></element>
-    	</choice>
+    	<choice maxOccurs="unbounded" minOccurs="0">
+   			<element name="Rule" type="tns:RuleType"></element>
+   			<element name="Rules" type="tns:RulesType"></element>
+   		</choice>
     </complexType>
     
     <complexType name="ResultSetType">
@@ -187,6 +250,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<choice maxOccurs="unbounded" minOccurs="1">
     		<element name="Node" type="tns:NodeType"></element>
     		<element name="Group" type="tns:GroupType"></element>
+    		<element name="Cluster" type="tns:ClusterType"></element>
     		<element name="Edge" type="tns:EdgeType"></element>
     	</choice>
     </complexType>
@@ -198,4 +262,5 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
     	<attribute name="target" type="string"></attribute>
     	<attribute name="targetHandle" type="int"></attribute>
     </complexType>
+
 </schema>

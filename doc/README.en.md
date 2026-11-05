@@ -1,31 +1,26 @@
-# OpenBimRL
+## Schema structure and its components
 
-> **Schema:** XSD <br>
-> **Current Version:** 2023.07.1 <br>
-> **First Publication Date:** 10.06.2022 <br>
-> **Autors:** Marcel Stepien, Andre Vonthron <br>
-> **E-Mail:** marcel.stepien@ruhr-uni-bochum.de <br>
-> **Licence:** MIT (Java-Sources), CC-BY-4.0 (XSD Schema)
-<br>
+The schema contains different Subcomponents, which are described
+by the subsequent section:
 
-## 0. Preface
+1. [OpenBIMRL-Root-Element](#1-openbimrl-root-element)
+    - [1.1 Bim rule](#11-bim-rule)
+        - [1.1.1 Precalculations](#111-precalculations)
+            - [1.1.1.1 Nodes](#1111-nodes)
+            - [1.1.1.2 Edges](#1112-edges)
+            - [1.1.1.3 Groups](#1113-groups)
+        - [1.1.2 Model check](#112-model-check)
+            - [1.1.2.1 Rule identifier](#1121-ruleidentifier)
+            - [1.1.2.2 Model subcheck](#1122-model-subcheck)
+            - [1.1.2.3 Result set](#1123-result-set)
+2. [Terms and definitions](#2-terms-and-definitions)
 
-The scheme was presented at the [EC-ICE 2023](https://www.ucl.ac.uk/bartlett/construction/research/virtual-research-centres/institute-digital-innovation-built-environment/30th-eg-ice-1) workshop/conference. The [paper](https://www.ucl.ac.uk/bartlett/construction/sites/bartlett_construction/files/5342.pdf) published in this context considers references to further prototypical implementations. These would be:
 
-- [OpenBIMRL-Engine](https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL-Engine)
-- [OpenBIMRL-CreatorTool](https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL-CreatorTool)
-
-## 1. Description
-
-Based on the idea of graph-based programming, the OpenBimRL format describes a rule language for the formal and functional verification of building models. The format defines a dynamically extendable interface on the basis of which building blocks for a graph-based verification process can be constructed and linked. During the development, emphasis was placed on the openness and transparency of the verification documents. In contrast to most available rule and query languages, it is possible to check both semantics and geometry, as long as the available engine can resolve the associated nodes and edges of the precalculation.
-
-## 2. Structure of the scheme and components
-
-![OpenBimRL Konzeptgrafik](doc/images/OpenBimRL-Konzeptgrafik.png "Konzeptgrafik")
+![OpenBimRL concept figure](images/OpenBimRL-Konzeptgrafik.png "Concept figure")
 
 > The OpenBimRL concept is made up of several building blocks, which forms the general structure the schema.
 
-### 2.0 OpenBimRL Root-Element
+### 1. OpenBimRL Root-Element
 The root element of OpenBIMRL is the OpenBIMRL component. The component nests a set of BIMRules, each of which describes a separate checking process.
 
 | Element.Attribut | Beschreibung | Beispiel |
@@ -54,12 +49,14 @@ The root element of OpenBIMRL is the OpenBIMRL component. The component nests a 
 | xsi   | http://www.w3.org/2001/XMLSchema-instance |
 | schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
 
-### 2.1 OpenBimRL Schema
+### 1.1 BIM-Rule
 The main component of an OpenBimRL verification rule is called _BIMRule_, which specifies the format of the rule. It is the enclosing element in the verification document. The following information must be given as a minimum:
 
 | Element.Attribut | Description | Example |
 | ---      | ---          | ---      |
-| BIMRule.name   | Name of the rule set. | "Checking primary Escape Route"   |
+| BIMRule.name   | Name of the rule set. | "Escape Route"   |
+| BIMRule.description | Description of the rule set. | "The Escape Route rule checks, whether..."   |
+| BIMRule.uuid   | Unique UUID | [a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}] |
 
 
 **Translated as XML instance:**
@@ -71,7 +68,7 @@ The main component of an OpenBimRL verification rule is called _BIMRule_, which 
 </BIMRule>
 ```
 
-#### 2.2 Precalculations
+#### 1.1.1 Precalculations
 The precalculations contain a graph with functions (as nodes) and a connection between inputs and outputs (as edges). The graph represents a process and/or algorithm, whose partial results can be stored temporarily for use in rules for model checking.
 
 **Translated as XML instance:**
@@ -96,7 +93,7 @@ The precalculations contain a graph with functions (as nodes) and a connection b
 </BIMRule>
 ```
 
-##### 2.2.1 Nodes (functions)
+##### 1.1.1.1 Nodes
 
 Each node element contains _input_ and _output_ elements. Their attributes describe how many inputs and outputs are present and how they are named. However, inputs and outputs are only optional. A non-existence of these means that there are no inputs or outputs for this node. A node is therefore defined as follows:
 
@@ -107,6 +104,7 @@ Each node element contains _input_ and _output_ elements. Their attributes descr
 | Node.alias | A user-defined text describing the node. | Example Text Here |
 | Node.xPos | The x-axis coordinate to enter a position. | 120 |
 | Node.yPos | The y-axis coordinate to enter a position. | 320 |
+| Node.debug | Option to set debug mode to can (de-)activate for web-based system | true |
 | Input.name | Display name of the input. | PropertySetName |
 | Output.name | Display name of the output. | IfcElement List |
 | Output.value | User-defined value of the output. | Pset_WallCommon |
@@ -136,7 +134,7 @@ Each node element contains _input_ and _output_ elements. Their attributes descr
 </Node>
 ```
 
-##### 2.2.2 Edges ( connections/relations)
+##### 1.1.1.2 Edges
 
 An edge always connects an output of a node (function) with the input of another node (function). No cycles may occur here! **The graph is only valid for directed non-cyclic definitions.** An edge is defined as follows:
 
@@ -158,7 +156,7 @@ An edge always connects an output of a node (function) with the input of another
     targetHandle="3"/>
 ```
 
-##### 2.2.3 Groups (Node nesting)
+##### 1.1.1.3 Groups
 A _Group_ nests elements from the graph of the precalculation (_Precalculation_ component) and represents them in the common context. This grouping is thereby a descriptive object, in that it refers directly to the components of the graphs and additionally names them.
 
 | Element.Attribut | Description | Example |
@@ -177,8 +175,53 @@ A _Group_ nests elements from the graph of the precalculation (_Precalculation_ 
 </Group>
 ```
 
+##### 1.1.1.4 Cluster
 
-### 2.3 ModelCheck (model test)
+Clusters make it possible to manage subgraphs as user-specific nodes.  
+The _input_ and _output elements_ of a cluster are defined and controlled by the corresponding _ClusterInput_ and _ClusterOutput nodes_.
+
+| Element.Attribute | Description | Example |
+| --- | --- | --- |
+| Cluster.id | Unique identifier of the referenced outgoing node (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Cluster.label | Name or description of the cluster. | "Sub-Routine of ..." |
+| Cluster.subGraph | A list of nodes, edges, groups, and clusters (the cluster's graph). | [ \<Node ... /\>, \<Node ... /\>, ..., \<Edge ... /\>] |
+| Cluster.color | The base color of the cluster in hexadecimal notation. | #fcba03 |
+| Cluster.xPos | x-position of the cluster node. | 300 |
+| Cluster.yPos | y-position of the cluster node. | 200 |
+| Cluster.debug | Option to set debug mode to can (de-)activate for web-based system | true |
+
+The IDs of _ClusterInput_ and _ClusterOutput nodes_ follow a strict naming convention and are derived from the ID of the cluster itself. A suffix is appended to the ID to indicate which referenced input or output the node represents. Accordingly, the ID must be constructed using the following scheme:
+
+* `clusterInput.id = cluster.id + '_I_' + inputIndex`
+* `clusterOutput.id = cluster.id + '_O_' + outputIndex`
+
+**Translated as XML instance:**
+```
+<Cluster id="c303da93-c6be-4f5a-be63-8ee3502cd268" label="A clustered SubGraph" color="#00D9FF" xPos="1996" yPos="1187">
+    <Inputs>
+        <ClusterInput name="In[0]"/>
+        <ClusterInput name="In[1]"/>
+    </Inputs>
+    <Outputs>
+        <ClusterOutput name="Out[0]"/>
+    </Outputs>
+    <SubGraph>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_0" function="input.clusterInput" alias="In[0]" xPos="1453" yPos="1120">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_1" function="input.clusterInput" alias="In[1]" xPos="1453" yPos="1220">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_O_0" function="input.clusterOutput" alias="Out[0]" xPos="2874" yPos="1120">
+            <Inputs>  <Input name="Out[0]"/> </Inputs>
+        </Node>
+        ...
+    </SubGraph>
+</Cluster>
+```
+
+
+### 1.1.2 Model Check
 The _ModelCheck_ component summarises all conditions and expected values of the checking rule. The _ModelCheck_ component itself defines a unique and descriptive name of the checking rule via the _name_ attribute. A ModelCheck is composed of three sub-components, namely the _RuleIdentifier_, _ModelSubCheck_ and _ResultSet_.
 
 **Translated as XML instance:**
@@ -210,21 +253,39 @@ The _ModelCheck_ component summarises all conditions and expected values of the 
 </tns:BIMRule>
 ```
 
-##### 2.3.1 RuleIdentifier for linking the check to the precalculation
-A _RuleIdentifier_ establishes a connection between the graph of the precalculation (_Precalculation_ component) and the rules applied to it. A _RuleIdentifier_ temporarily stores a calculated result from the graph in order to examine it in more detail linked by conditions. Accordingly, the source must be specified for a _RuleIdentifier_, explicit to the selected output. 
+##### 1.1.2.1 RuleIdentifier
+A _RuleIdentifier_ establishes a connection between the graph of the precalculation (_Precalculation_ component) and the rules applied to it. A _RuleIdentifier_ temporarily stores a calculated result from the graph in order to examine it in more detail linked by conditions. Accordingly, the source must be specified for a _RuleIdentifier_, explicit to the selected output.
 
 | Element.Attribut | Description | Example |
 | ---      | ---          | ---      |
 | RuleIdentifier.label | Unique term under which the RuleIdentifier is used in the rule check. | ifcWallEntities |
 | RuleIdentifier.source | Unique identifier of the outgoing referenced node (UUID). | bc2a7431-9376-db5d-a12a-fe48e83bddbd |
 | RuleIdentifier.sourceHandle | Number of the addressed output, starting with 0. | 0 |
+| RuleIdentifier.hidden | Option to mark as hidden to divide into purpose of output listing and addtional checking context. | true |
 
-##### 2.3.2 ModelSubCheck for nesting multiple rules and conditions 
-A _ModelSubCheck_ summarises a group of individual requirements and allows them to be evaluated as a single test. The sub-check can be given a name separate from the main check via the _label_ attribute. Such a _ModelSubCheck_ consists of two main parts, _Applicability_ and _Rules_. 
+##### 1.1.2.2 Model subcheck
+A _ModelSubCheck_ summarises a group of individual requirements and 
+allows them to be evaluated as a single test. 
 
-The _Applicability_ is an optional component which itself contains a cascade of _Rules_ and _Rule_ components. The _Applicability_ can be used to apply a filter prior to rule checking. Only a set of valid elements are processed in the rule checking.
+| Element.Attribut | Description | Example |
+| ---      | ---          | ---      |
+| ModelSubCheck.name | Label field | Building class |
+| ModelSubCheck.description | Description field | The building class check determines, if ... |
+The sub-check can be given a name separate 
+from the main check via the _label_ attribute. Such a _ModelSubCheck_ consists of two main parts, _Applicability_ and _Rules_.
 
-The rules and rule components are a cascading structure of grouped conditions. Individual rules (rule component) and groups of rules (rules component) can be nested to test more complex relationships. Usually, a list of information (as _operand1_) is always tested against static values (as _operand2_). This produces a test result as a filter mask, consisting of a list of _True_ and _False_ values, which can be intermediately held via a designation of the attribute _label_ in the ResultSets. The _quantifier_ and _operator_ attributes are used to set the logical constraints so that it can be determined whether the check can be completed successfully.
+The _Applicability_ is an optional component that itself contains a cascade 
+of _Rules_ and _Rule_ components. The _Applicability_ can be used to apply a filter 
+prior to rule checking. Only a set of valid elements are processed in the rule checking.
+
+The rules and rule components are a cascading structure of grouped conditions. 
+Individual rules (rule component) and groups of rules (rules component) can be nested 
+to test more complex relationships. Usually, a list of information (as _operand1_) 
+is always tested against static values (as _operand2_). This produces a test result as a 
+filter mask, consisting of a list of _True_ and _False_ values, which can be 
+intermediately held via a designation of the attribute _label_ in the ResultSets. 
+The _quantifier_ and _operator_ attributes are used to set the logical constraints 
+so that it can be determined whether the check can be completed successfully.
 
 | Element.Attribut | Description | Example |
 | ---      | ---          | ---      |
@@ -235,7 +296,7 @@ The rules and rule components are a cascading structure of grouped conditions. I
 | Rule.operator2 | A static value to be checked against. | feuerbeständig |
 | Rule2.operator | The operator to be used for Boolean operations, for linking the partial results. | or, and, xor |
 
-##### 2.3.3 ResultSet for the representation of expected partial results
+##### 1.1.2.3 Result Set
 A _ResultSet_ allows elements from the pre-calculation to be filtered with partial results of the check, creating views (Model Views) on successfully and unsuccessfully checked elements. This is made possible by applying filter masks to a set of testable elements. A _ResultSet_ requires three attributes for definition, which are a _name_, _elements_ and _filter_.
 
 | Element.Attribut | Description | Example |
@@ -244,7 +305,7 @@ A _ResultSet_ allows elements from the pre-calculation to be filtered with parti
 | ResultSet.elements | The list of testable elements from the precalculation. | ifcWallEntities |
 | ResultSet.filter | The reference to the applicable filter mask from the test procedure. | filterMaskA |
 
-## 3. Terms and definitions
+## 2. Terms and definitions
 
 **Query language** is a language construct derived from logic and grammatics, which forms the basis for declarative programming. In a query language, relationships of information are mapped and their conclusions are derived according to available facts. A query operates on a data basis (database). Its execution generates subsets (views, selections) of objects and information from the data basis.
 
@@ -258,6 +319,6 @@ In the **functional check**, it is necessary to prove the information supply of 
 
 In the context of OpenBimRL, **building models** are always BIM-based models in the Industry Foundation Classes (IFC) format. IFC is a construct of classes that define a digital building.
 
-The term **semantics** is understood to mean descriptive information about a building component, which is predominantly aimed at the textual definition of individual pieces of information. However, semantic information is not necessarily bound to an object, so structural specifications (building > storey > room) can also be interpreted as semantic information. 
+The term **semantics** is understood to mean descriptive information about a building component, which is predominantly aimed at the textual definition of individual pieces of information. However, semantic information is not necessarily bound to an object, so structural specifications (building > storey > room) can also be interpreted as semantic information.
 
 **Geometry** is the representation and position of an object in a global space. Geometric distortions, transformations, and operators can also be used to generate statements from the set (for example, the intersection between two or more objects = collision). Geometry is usually used to derive parameters from its representation.

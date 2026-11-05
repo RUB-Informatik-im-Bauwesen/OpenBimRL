@@ -1,0 +1,325 @@
+## Aufbau des Schemas und der Komponenten
+
+Das Schema unterteilt sich in verschiedene Unterkomponenten,
+die nachfolgende beschrieben werden:
+
+1. [OpenBIMRL-Root-Element](#1-openbimrl-root-element)
+    - [1.1 BIM-Regel](#11-bim-regel-bim-rule)
+        - [1.1.1 Vorberechnungen](#111-vorberechnungen-pre-calculations)
+            - [1.1.1.1 Knoten](#1111-knoten-nodes)
+            - [1.1.1.2 Kanten](#1112-kanten-edges)
+            - [1.1.1.3 Gruppen](#1113-gruppen-groups)
+            - [1.1.1.4 Cluster](#1114-cluster)
+        - [1.1.2 Modellprüfung](#112-modellprüfung-modelcheck)
+            - [1.1.2.1 Rule-Identifier](#1121-ruleidentifier)
+            - [1.1.2.2 Teil-Prüfung](#1122-teilprüfung-model-sub-check)
+            - [1.1.2.3 Ergebnismenge](#1123-ergebnismenge-result-set)
+2. [Glossar](#4-glossar)
+
+
+![OpenBimRL Konzeptgrafik](images/OpenBimRL-Konzeptgrafik.png "Konzeptgrafik")
+
+> Das OpenBimRL Konzept setzt sich aus mehreren Bausteinen zusammen, welche in Kombination das Schema des Formats darstellen.
+
+### 1. OpenBimRL Root-Element
+Das Root-Element von OpenBIMRL ist die OpenBIMRL-Komponente. Die Komponente Schachtelt eine Reihe von BIMRules, welche jeweils einen eigenen Prüfvorgang beschreiben.
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| OpenBIMRL.schemaVersion   | Angabe der Version mit welcher die vorliegende Prüfung erzeugt wurde. | 0.1   |
+
+
+**Übersetzt als XML-Instanz:**
+```
+<OpenBIMRL schemaVersion="0.1" 
+    xmlns="http://inf.bi.rub.de/OpenBimRL" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL_Extension.xsd">
+
+    <BIMRule ...> ... </BIMRule>
+    <BIMRule ...> ... </BIMRule>
+    ...
+
+</OpenBIMRL>
+
+```
+
+| Namespace | URI | 
+| ---      | ---          | 
+| default   | http://inf.bi.rub.de/OpenBimRL |
+| xsi   | http://www.w3.org/2001/XMLSchema-instance |
+| schemaLocation   | https://github.com/RUB-Informatik-im-Bauwesen/OpenBimRL/blob/main/schema/OpenBimRL.xsd |
+
+### 1.1 BIM-Regel (BIM-Rule)
+Die Hauptkomponente einer OpenBimRL Prüfregel nennt sich _BIMRule_, welche das Format der Regel vorgibt. Es handelt sich dabei um das umschließende Element im Prüfdokument. Folgende Angaben sind hierbei mindestens anzugeben:
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| BIMRule.name   | Name des Regelsatzes. | "Rettungsweg-Prüfung"   |
+| BIMRule.description | Beschreibung des Regelsatzes | "Es wird geprüft, ob hinterlegte Rettungswege..."   |
+| BIMRule.uuid   | Eindeutige UUID | [a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}] |
+
+
+**Übersetzt als XML-Instanz:**
+```
+<BIMRule name="Checking primary Escape Route">
+
+    ...
+
+</BIMRule>
+```
+
+#### 1.1.1 Vorberechnungen (Pre-calculations)
+Die Vorberechnungen enthalten einen Graphen mit Funktionen (als Knoten) und eine Verbindung zwischen Ein- und Ausgängen (als Kanten). Der Graph bildet dabei einen Vorgang und/oder Algorithmus ab, dessen Teilergebnisse zwischengehalten werden können, um diese in den Regeln der Modellprüfung zu verwenden.
+
+**Übersetzt als XML-Instanz:**
+```
+<BIMRule ...>
+
+    <!-- Precalculations enthalten einen Graphen zur Vorberechnung von Teilmengen und Ergebnissen für die Prüfung. -->
+    <Precalculations>
+
+        <Node> ... </Node>
+        <Node> ... </Node>
+        <Node> ... </Node>
+
+        <Edge ... />
+        <Edge ... />
+        <Edge ... />
+
+    </Precalculations>
+
+    ...
+
+</BIMRule>
+```
+
+##### 1.1.1.1 Knoten (Nodes)
+
+Jedes Knoten-Element enthält _input_ und _output_-Elemente, deren Attribute beschreiben, wie viele Ein- und Ausgänge vorhanden sind und wie diese benannt sind. Inputs und outputs sind jedoch nur optional. Ein nicht vorhanden sein dessen bedeutet, dass es keine Eingänge oder Ausgänge gibt für diesen Knoten. Ein Knoten definiert sich demnach wie folgt:
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Node.id | Eindeutiger identifier des Knotens (UUID). | f2f87b48-108e-4f38-1328-7e8924d89738 |
+| Node.function | Name und Pfad der Funktion, die dieser Knoten ausführt. | ifc.filterByProperty |
+| Node.alias | Ein vom Nutzer definierter Text zur Beschreibung des Knotens. | Example Text Here |
+| Node.debug | Möglichkeit, den Debug-Status zu setzen, um Zwischenausgaben für browsergestützte Systeme zu (de-)aktivieren | true |
+| Input.name | Angezeige Name des Eingangs. | PropertySetName |
+| Output.name | Angezeige Name des Ausgangs. | IfcElement List |
+| Output.value | Nutzerdefinierter Wert des Ausgangs. | Pset_WallCommon |
+
+**Übersetzt als XML-Instanz:**
+```
+<!-- Knoten ohne Eingang: -->
+<Node id="25525f88-07e7-740b-7a79-d2294af8687a" function="input.textInput" 
+    xPos="150" yPos="100">
+    <Outputs>
+        <Output name="text" value="NotwendigerFlur"/>
+    </Outputs>
+</Node>
+
+<!-- Knoten mit Ein- und Ausgang: -->
+<Node id="f3d898d8-b958-3d79-084c-cce953f4b168" function="ifc.filterByProperty" 
+    alias="Example Text Here" xPos="150" yPos="100">  
+    <Inputs>
+        <Input name="IfcElement List"/>
+        <Input name="PropertySet Name"/>
+        <Input name="Property Name"/>
+        <Input name="Value"/>
+    </Inputs>
+    <Outputs>
+        <Output name="IfcElement List"/>
+    </Outputs>
+</Node>
+```
+
+##### 1.1.1.2 Kanten (Edges)
+
+Eine Kante verbindet immer einen Ausgang eines Knotens (Funktion) mit dem Eingang eines anderen Knotens (Funktion). Hierbei dürfen keine Zyklen definiert werden! **Der Graph ist nur für gerichtete, nicht zyklische Definitionen gültig.** Eine Kante wird wie folgt definiert:
+
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Edge.id | Eindeutiger identifier der Kante (UUID). | f2f87b48-108e-4f38-1328-7e8924d89738 |
+| Edge.source | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | 25525f88-07e7-740b-7a79-d2294af8687a |
+| Edge.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 2 |
+| Edge.target | Eindeutiger identifier des eingehenden referenzierten Knotens (UUID). | f3d898d8-b958-3d79-084c-cce953f4b168 |
+| Edge.targetHandle | Nummer des adressierten Eingangs, angefangen bei 0.  | 1 |
+
+**Übersetzt als XML-Instanz:**
+```
+<Edge 
+    id="ba4d8538-209d-48a8-5165-6c813e164ba1" 
+    source="25525f88-07e7-740b-7a79-d2294af8687a" 
+    sourceHandle="0" 
+    target="f3d898d8-b958-3d79-084c-cce953f4b168" 
+    targetHandle="3"/>
+```
+
+
+##### 1.1.1.3 Gruppen (Groups)
+Eine _Group_ gruppiert Elemente aus dem Graphen der Vorberechnung (_Precalculation_-Komponente) und stellt diese im gemeinsamen Kontext dar. Diese Gruppierung ist dabei ein beschreibendes Objekt, indem es direkt auf die Komponenten der Graphen verweist und diese zusätzlich benennt.
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Group.label | Benennung, bzw. Beschreibung der Gruppe. | "Sub-Rountine of ..." |
+| Group.id | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Group.color | Die Grundfarbe der Gruppe in Hexerdeximal-Schreibweise. | #fcba03 |
+| Group.children | Die liste der Knoten, welche zur Gruppe zugeordnet werden. | ["db5d...", "db5d..."] |
+
+**Übersetzt als XML-Instanz:**
+```
+<Group id="ba4d8538-209d-48a8-5165-6c813e164ba1" label="Sub-Routine of ..." color="#fcba03">
+    <children>25525f88-07e7-740b-7a79-d2294af8687a</children>
+    <children>f3d898d8-b958-3d79-084c-cce953f4b168</children>
+    ...
+</Group>
+```
+
+##### 1.1.1.4 Cluster
+
+Cluster ermöglichen es, Teil-Graphen als nutzerspezifische Knoten zu verwalten.  
+Die _input_ und _output-Elemente_ eines Clusters sind über die Teilelemente _ClusterInput-_ und 
+_ClusterOutput-Knoten_ definiert und gesteuert. 
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Cluster.id | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fdb5d83bddbh |
+| Cluster.label | Benennung, bzw. Beschreibung des Klusters. | "Sub-Rountine of ..." |
+| Cluster.subGraph | Eine liste von Knoten, Kanten, Gruppen und Kluster (Graph des Klusters). | [ <Node ... />, <Node ... />, ..., <Edge ... />] |
+| Cluster.color | Die Grundfarbe des Klusters in Hexerdeximal-Schreibweise. | #fcba03 |
+| Cluster.xPos | x-Position des Cluster-Knotens | 300 |
+| Cluster.yPos | y-Position des Cluster-Knotens | 200 |
+| Cluster.debug | Möglichkeit, den Debug-Status zu setzen, um Zwischenausgaben für browsergestützte Systeme zu (de-)aktivieren | true |
+
+Die id von _ClusterInput-_ und _ClusterOutput-Knoten_ ist strikt vorgegeben und wird durch die id 
+des Clusters selbst abgeleitet. Als post-fix wird ein Hinweis der id angehangen, um welchen referenzierten Input 
+oder Output es sich bei dem Knoten handelt. Demnach ist die Form des id nach folgendem Schema zu konstruieren:
+
+* _clusterInput.id = cluster.id + '_I_' + inputIndex_
+* _clusterOutput.id = cluster.id + '_O_' + outputIndex_
+
+
+**Übersetzt als XML-Instanz:**
+```
+<Cluster id="c303da93-c6be-4f5a-be63-8ee3502cd268" label="A clustered SubGraph" color="#00D9FF" xPos="1996" yPos="1187">
+    <Inputs>
+        <ClusterInput name="In[0]"/>
+        <ClusterInput name="In[1]"/>
+    </Inputs>
+    <Outputs>
+        <ClusterOutput name="Out[0]"/>
+    </Outputs>
+    <SubGraph>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_0" function="input.clusterInput" alias="In[0]" xPos="1453" yPos="1120">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_I_1" function="input.clusterInput" alias="In[1]" xPos="1453" yPos="1220">
+            <Outputs> <Output name="In[0]"/> </Outputs>
+        </Node>
+        <Node id="c303da93-c6be-4f5a-be63-8ee3502cd268_O_0" function="input.clusterOutput" alias="Out[0]" xPos="2874" yPos="1120">
+            <Inputs>  <Input name="Out[0]"/> </Inputs>
+        </Node>
+        ...
+    </SubGraph>
+</Cluster>
+```
+
+
+### 1.1.2 Modellprüfung (ModelCheck)
+Die _ModelCheck_-Komponente fasst alle Bedingungen und Erwartungswerte der Prüfregel zusammen. Die _ModelCheck_-Komponente selbst definiert über das Attribut _name_ eine eindeutige und beschreibende Bezeichnung der Prüfregel. Ein ModelCheck setzt sich wiederum aus drei Sub-Komponenten zusammen, namentlich den _RuleIdentifier_, _ModelSubCheck_ und _ResultSet_.
+
+**Übersetzt als XML-Instanz:**
+```
+</tns:BIMRule>
+    ...
+    <tns:ModelCheck name="Formeller Pruefvorgang">
+		<tns:RuleIdentifiers>
+			<tns:RuleIdentifier label="propertyValue" source="85d5009c-f8dc-1ccf-66c8-ce610713793a" sourceHandle="0" xPos="150" yPos="100"/>
+			<tns:RuleIdentifier label="ifcWallEntities" source="bc2a7431-9376-db5d-a12a-fe48e83bddbd" sourceHandle="0" xPos="150" yPos="100"/>
+            ...
+		</tns:RuleIdentifiers>
+		<tns:ModelSubChecks>
+			<tns:ModelSubCheck name="Check PropertySet by Values">
+                <tns:Applicability> ... </tns:Applicability>
+				<tns:Rules label="77dd6850-f1d7-4c13-81e0-2de33fbf06cc" operator="or">
+					<tns:Rule label="check01" quantifier="exists" operator="equals" operand1="propertyValue" operand2="true"/>
+					<tns:Rule label="check02" quantifier="exists" operator="equals" operand1="propertyValue" operand2="false"/>
+				</tns:Rules>
+			</tns:ModelSubCheck>
+            ...
+		</tns:ModelSubChecks>
+		<tns:ResultSets>
+			<tns:ResultSet name="PropertySet by Values [true]" elements="ifcWallEntities" filter="check01"/>
+			<tns:ResultSet name="PropertySet by Values [false]" elements="ifcWallEntities" filter="check02"/>
+            ...
+		</tns:ResultSets>
+	</tns:ModelCheck>
+</tns:BIMRule>
+```
+
+##### 1.1.2.1 RuleIdentifier
+Ein _RuleIdentifier_ stellt eine Verbindung zwischen dem Graphen der Vorberechnung (_Precalculation_-Komponente) und den darauf angewandten Regeln her. Es wird durch ein _RuleIdentifier_ ein kalkuliertes Ergebnis aus dem Graphen zwischengespeichert, um diese durch Bedingungen verknüpft genauer zu untersuchen. Demnach müssen für einen _RuleIdentifier_ die Quelle angegeben werden, explizit zur ausgewählten Ausgabe (eng. output).
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| RuleIdentifier.label | Eindeutige Bezeichnung, unter derer der RuleIdentifier in der Regelprüfung verwendet wird. | ifcWallEntities |
+| RuleIdentifier.source | Eindeutiger Identifier des ausgehenden referenzierten Knotens (UUID). | bc2a7431-9376-db5d-a12a-fe48e83bddbd |
+| RuleIdentifier.sourceHandle | Nummer des adressierten Ausgangs, angefangen bei 0. | 0 |
+| RuleIdentifier.hidden | Option, um Ausgaben auszublenden, falls sie nicht als Ausgabe sichtbar sein sollen. | true |
+
+
+##### 1.1.2.2 Teilprüfung (Model-sub-check)
+Ein _ModelSubCheck_ fasst eine Gruppe von individuellen Anforderungen zusammen und 
+erlaubt es diese als eigenständige Prüfung zu evaluieren. Der Teilprüfung kann über 
+das Attribut _label_ ein vom Haupt-Prüfvorgang separater Name verliehen werden. 
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| ModelSubCheck.name | Name der Prüfung | Abgleich der Gebäudeklasse |
+| ModelSubCheck.description | Beschreibungsfeld | Der Abgleich der Gebäudeklasse überprüft... |
+
+Ein _ModelSubCheck_ besteht aus zwei wesentlichen Teilen, der _Applicability_ (de. Anwendbarkeit) 
+und _Rules_ (de. Regeln). Bei der _Applicability_ handelt es sich um eine optionale Komponente, 
+welche selbst eine Kaskade von _Rules_ und _Rule_ Komponenten enthält. 
+Durch die _Applicability_ kann zum Ausdruck gebracht werden, ob und auf was eine Prüfung angewandt wird. 
+Es beschreibt also einen Gültigkeitsbereich für untersuchte Elemente im Prüfprozess.
+
+Bei den Rules- und Rule-Komponenten handelt es sich um eine kaskadierende Struktur von gruppierten Bedingungen. Einzelne Regeln (Rule-Komponente) und Gruppen von Regeln (Rules-Komponente) können verschachtelt werden, um komplexere Zusammenhänge zu prüfen. Dabei wird in der Regel immer eine Liste von Informationen (als _operand1_) gegen statische Werte getestet (als _operand2_). Dabei entsteht ein Prüfergebnis als Filtermaske, bestehend aus einer Liste _True_ und _False_ Werten, welche über eine Bezeichnung des Attributs _label_ für die Darstellung in den ResultSets zwischengehalten werden kann. Über die Attribute _quantifier_ und _operator_ kann definiert werden, welche Mengen- und Prüfungsform gelten muss, damit die Prüfung erfolgreich abgeschlossen werden kann.
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| Rule.label | Eine eindeutige Bezeichnung, unter dessen Referenz die Filtermaske in den Resultsets verwendet wird. | filterMaskA |
+| Rule.quantifier | Der anzuwendende Quantor zur Steuerung des Prüfvorgangs. | all, exists, notexists |
+| Rule.operator | Der anzuwendende Operator zur Steuerung des Prüfvorgangs. | equals, includes, notincludes |
+| Rule.operator1 | Eine Liste von Werten, welche über die RuleIdentifier in die Prüfung injekted werden. | propertyValue |
+| Rule.operator2 | Ein statischer Wert, gegen den geprüft werden soll. | feuerbeständig |
+| Rule2.operator | Der anzuwendende Operator für Boolsche-Operationen, zur Verknüpfung der Teilergebnisse. | or, and, xor |
+
+##### 1.1.2.3 Ergebnismenge (Result-Set)
+Ein _ResultSet_ ermöglicht es Elemente aus der Vorberechnung mit Teil-Ergebnissen der Prüfung zu filtern, wodurch Ansichten (Model Views) auf erfolgreich und nicht erfolgreich geprüfte Elemente erzeugt werden können. Dies wird möglich durch die Anwendung von Filtermasken auf eine Menge von prüfbaren Elementen, wodurch diese gefiltert wird. Ein _ResultSet_ benötigt drei Attribute zur Definition, welche da wären einen _name_, _elements_ und _filter_.
+
+| Element.Attribut | Beschreibung | Beispiel |
+| ---      | ---          | ---      |
+| ResultSet.name | Eindeutige Bezeichnung, unter derer die Ergebnisse der Prüfung zu verstehen sind. | Erfolgreich geprüfte Elemente nach XYZ |
+| ResultSet.elements | Die Liste von prüfbaren Elementen aus der Vorberechnung. | ifcWallEntities |
+| ResultSet.filter | Die Referenz auf die anzuwendende Filtermaske aus dem Prüfvorgang. | filterMaskA |
+
+## 4. Glossar
+
+**Abfragesprache** ist ein aus der Aussagenlogik und Grammatik entsprungenes Sprachkonstrukt, welche die Grundlage für die deklarative Programmierung bilden. In einer Abfragesprache werden Beziehungen von Informationen abgebildet und deren Schlussfolgerungen gemäß vorliegender Fakten abgeleitet. Eine Abfrage operiert auf einer Datengrundlage (Datenbank). Ihre Ausführung erzeugt dabei Teilmengen (Sichten, Selektionen) von Objekten und Informationen aus der Datengrundlage.
+
+**Regelsprache** ist die logische Erweiterung von Abfragesprachen und ermöglichen es, eine Aussage zu einem eindeutigen Ergebnis von *Wahr* oder *Falsch* abzuleiten. Im Kern der Regelsprachen befinden sich demnach immer Fragestellungen, die zu einem eindeutigen Zustand abgeleitet werden können.
+
+**Graphen** sind aus Knoten und Kanten bestehende Konstrukte, welche in Kombination ein Netzwerk an Informationen und Informationsflüssen abbilden. Hier wird dabei von gerichteten Graphen, nicht zyklischen gesprochen, welche eindeutige Werte für den Eingang erwarten und eine Ausgabe erzeugen.
+
+Die **formale Prüfung** bezeichnet die ordnungsmäßige Attribuierung eines Modells nach vorliegender Norm. Dazu zählen die Typisierung und Existenz von Eigenschaften am Modell, nach den Vorgaben von Richtlinien und Normen.
+
+Bei der **fachlichen Prüfung** gilt es, die Informationslieferung des vorhandenen und ordnungsmäßig modellierten Modells nachzuweisen. Die fachlichen Vorgaben der Normen und Richtlinien werden algorithmisch umgesetzt und deren Ergebnisse gegen die Angaben im Modell abgeglichen. Oftmals ist hierfür eine komplexe Verkettung von Informationen notwendig (siehe Definition von Graphen).
+
+**Bauwerksmodelle** sind im Kontext von OpenBimRL immer BIM-basierte Modelle im Format der Industry Foundation Classes (IFC). Bei IFC handelt es sich wiederum um ein Konstrukt von Klassen zur Definition eines digitalen Bauwerks.
+
+Als **Semantik** werden beschreibende Informationen zu einem Bauteil verstanden, welche überwiegend auf die textuelle Definition einzelner Informationen abzielt. Semantische Informationen sind jedoch nicht zwingend an ein Objekt gebunden, so können strukturelle Vorgaben (Gebäude > Etage > Raum) ebenfalls als semantische Information interpretiert werden.
+
+Bei der **Geometrie** handelt es sich um die Darstellung und Position eines Objekts im global betrachteten Raum. Hierbei können auch geometrische Verzerrungen, Transformationen und Operatoren genutzt werden, um Aussagen aus der Menge zu erzeugen (bspw. Intersection/Verschnitt zwischen zwei oder mehr Objekten = Kollision). Meistens wird die Geometrie genutzt, um Kenngrößen aus ihrer Darstellung abzuleiten.
+
